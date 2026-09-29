@@ -1,0 +1,6 @@
+{
+  "name": "TITAN Pest Control Group - Sistema Integral de Operaciones",
+  "description": "Software Titan Arquitectura Funcional 1.0 (v9): Ventas con motor de precios protegido, Cierre con contrato digital y firmas, Operaciones de campo, Inventario químico y Cumplimiento Sanitario.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
