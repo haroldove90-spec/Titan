@@ -1,5 +1,6 @@
 import React from 'react';
 import { 
+  Home,
   Building2, 
   Settings2, 
   Handshake, 
@@ -46,6 +47,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       case 'direccion_general':
         return [
           {
+            id: 'home',
+            label: 'Inicio',
+            icon: <Home className="w-4 h-4 sm:w-5 sm:h-5" />,
+          },
+          {
             id: 'general_kpi',
             label: 'Dashboard',
             icon: <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />,
@@ -61,11 +67,6 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
             icon: <Handshake className="w-4 h-4 sm:w-5 sm:h-5" />,
           },
           {
-            id: 'general_servicios',
-            label: 'Operación',
-            icon: <Bug className="w-4 h-4 sm:w-5 sm:h-5" />,
-          },
-          {
             id: 'general_finanzas',
             label: 'Finanzas',
             icon: <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />,
@@ -74,6 +75,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
 
       case 'direccion_operaciones':
         return [
+          {
+            id: 'home',
+            label: 'Inicio',
+            icon: <Home className="w-4 h-4 sm:w-5 sm:h-5" />,
+          },
           {
             id: 'op_tablero',
             label: 'Flota/Zonas',
@@ -94,15 +100,15 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
             label: 'Red MIP',
             icon: <Layers className="w-4 h-4 sm:w-5 sm:h-5" />,
           },
-          {
-            id: 'op_asistencia',
-            label: 'Asistencia',
-            icon: <Fingerprint className="w-4 h-4 sm:w-5 sm:h-5" />,
-          },
         ];
 
       case 'ventas':
         return [
+          {
+            id: 'home',
+            label: 'Inicio',
+            icon: <Home className="w-4 h-4 sm:w-5 sm:h-5" />,
+          },
           {
             id: 'p01',
             label: 'P01 Dash',
@@ -128,6 +134,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       case 'servicios':
         return [
           {
+            id: 'home',
+            label: 'Inicio',
+            icon: <Home className="w-4 h-4 sm:w-5 sm:h-5" />,
+          },
+          {
             id: 'srv_agenda',
             label: 'Mi Agenda',
             icon: <Navigation className="w-4 h-4 sm:w-5 sm:h-5" />,
@@ -147,15 +158,15 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
             label: 'Químicos',
             icon: <Package className="w-4 h-4 sm:w-5 sm:h-5" />,
           },
-          {
-            id: 'srv_asistencia',
-            label: 'Asistencia',
-            icon: <Fingerprint className="w-4 h-4 sm:w-5 sm:h-5" />,
-          },
         ];
 
       case 'administracion':
         return [
+          {
+            id: 'home',
+            label: 'Inicio',
+            icon: <Home className="w-4 h-4 sm:w-5 sm:h-5" />,
+          },
           {
             id: 'adm_cxc',
             label: 'CxC P04',
@@ -181,6 +192,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       case 'responsable_sanitario':
         return [
           {
+            id: 'home',
+            label: 'Inicio',
+            icon: <Home className="w-4 h-4 sm:w-5 sm:h-5" />,
+          },
+          {
             id: 'san_carpetas',
             label: 'Auditoría',
             icon: <FlaskConical className="w-4 h-4 sm:w-5 sm:h-5" />,
@@ -204,6 +220,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
 
       case 'crm_clientes':
         return [
+          {
+            id: 'home',
+            label: 'Inicio',
+            icon: <Home className="w-4 h-4 sm:w-5 sm:h-5" />,
+          },
           {
             id: 'crm_expediente',
             label: 'Expediente',

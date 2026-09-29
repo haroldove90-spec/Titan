@@ -17,6 +17,7 @@ import { BiometricsModule } from './components/biometrics/BiometricsModule';
 import { SanitaryModule } from './components/sanitary/SanitaryModule';
 import { GeneralDashboard } from './components/general/GeneralDashboard';
 import { CrmClientPortal } from './components/crm/CrmClientPortal';
+import { HubNavigation } from './components/HubNavigation';
 import { 
   INITIAL_PROSPECT, 
   INITIAL_QUOTE, 
@@ -53,7 +54,7 @@ const getDefaultModuleForRole = (role: UserRole): string => {
 export default function App() {
   // Navigation & Isolated Role State
   const [currentRole, setCurrentRole] = useState<UserRole>('direccion_general');
-  const [activeModuleId, setActiveModuleId] = useState<string>('general_kpi');
+  const [activeModuleId, setActiveModuleId] = useState<string>('home');
   const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
 
   // Master Shared State (The Single Master Record / Expediente Único)
@@ -159,6 +160,10 @@ export default function App() {
 
   // Determine Title and Subtitle based on active module & role
   const getContextualHeaders = () => {
+    if (activeModuleId === 'home') {
+      return { title: 'Portal de Roles TITAN', subtitle: 'Selecciona un módulo o departamento con acceso directo' };
+    }
+
     switch (activeModuleId) {
       case 'general_kpi':
         return { title: 'Dirección General', subtitle: 'Dashboard Ejecutivo y Conversión' };
@@ -243,7 +248,8 @@ export default function App() {
         currentRole={currentRole}
         activeModuleId={activeModuleId}
         onSelectModule={(id) => setActiveModuleId(id)}
-        onLogout={() => setIsRoleModalOpen(true)}
+        onLogout={() => setActiveModuleId('home')}
+        onGoHome={() => setActiveModuleId('home')}
       />
 
       {/* Main Content Area */}
@@ -254,12 +260,22 @@ export default function App() {
           onRoleChange={handleRoleChange}
           activeModuleTitle={activeTitle}
           activeModuleSubtitle={activeSubtitle}
-          onGoHome={() => setActiveModuleId(getDefaultModuleForRole(currentRole))}
-          onOpenRoleModal={() => setIsRoleModalOpen(true)}
+          onGoHome={() => setActiveModuleId('home')}
+          onOpenRoleModal={() => setActiveModuleId('home')}
         />
 
         {/* View Content (with padding for mobile bottom bar) */}
         <main className="flex-1 pb-24 lg:pb-8 w-full max-w-full overflow-x-hidden min-w-0">
+          {/* 0. HOME / PORTAL DE BIENVENIDA CON FOTOS Y ACCESO DIRECTO A ROLES */}
+          {activeModuleId === 'home' && (
+            <HubNavigation
+              currentRole={currentRole}
+              onSelectModule={(roleKey) => {
+                handleRoleChange(roleKey as UserRole);
+              }}
+            />
+          )}
+
           {/* 1. DIRECCIÓN GENERAL */}
           {(activeModuleId === 'general_kpi' || activeModuleId === 'general_rentabilidad') && (
             <GeneralDashboard

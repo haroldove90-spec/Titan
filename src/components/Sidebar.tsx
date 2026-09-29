@@ -1,5 +1,6 @@
 import React from 'react';
 import { 
+  Home,
   Building2, 
   Settings2, 
   Handshake, 
@@ -40,6 +41,7 @@ interface SidebarProps {
   activeModuleId: string;
   onSelectModule: (moduleId: string) => void;
   onLogout: () => void;
+  onGoHome?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -47,6 +49,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   activeModuleId,
   onSelectModule,
   onLogout,
+  onGoHome,
 }) => {
   const roleInfo = ROLE_LABELS[currentRole];
 
@@ -332,8 +335,42 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Role Exclusive Modules List */}
       <div className="flex-1 px-3 py-1 space-y-1.5 overflow-y-auto">
-        <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 py-1 flex items-center justify-between">
-          <span>Módulos de tu Rol</span>
+        {/* Direct Link to Home / Portal de Roles */}
+        {onGoHome && (
+          <button
+            type="button"
+            onClick={onGoHome}
+            className={`w-full flex items-center justify-between p-2.5 mb-2 rounded-xl text-left transition-all ${
+              activeModuleId === 'home'
+                ? 'bg-[#d4a34b] text-black font-bold shadow-lg'
+                : 'bg-[#131622] text-[#d4a34b] hover:text-white hover:bg-[#1c2233] border border-[#3b2d18]'
+            }`}
+          >
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className={`p-1.5 rounded-lg shrink-0 ${
+                activeModuleId === 'home' ? 'bg-black/20 text-black' : 'bg-[#20273a] text-[#f59e0b]'
+              }`}>
+                <Home className="w-4 h-4" />
+              </div>
+              <div className="min-w-0">
+                <div className="text-xs font-bold truncate">Portal de Roles (Home)</div>
+                <div className={`text-[10px] truncate ${
+                  activeModuleId === 'home' ? 'text-black/80 font-medium' : 'text-slate-400'
+                }`}>
+                  Fotos y accesos de bienvenida
+                </div>
+              </div>
+            </div>
+            <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 ml-1 ${
+              activeModuleId === 'home' ? 'bg-black text-white' : 'bg-[#261f13] text-[#f59e0b]'
+            }`}>
+              Home
+            </span>
+          </button>
+        )}
+
+        <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 py-1 flex items-center justify-between border-t border-[#211a11] pt-2">
+          <span>Módulos del Rol</span>
           <span className="text-[#d4a34b] font-mono-tabular">{modules.length}</span>
         </div>
 
