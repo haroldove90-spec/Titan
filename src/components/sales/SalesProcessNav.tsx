@@ -16,8 +16,10 @@ export const SalesProcessNav: React.FC<SalesProcessNavProps> = ({
   canNavigateToCotizacion = true,
   canNavigateToCierre = true,
 }) => {
+  // HIDDEN on tablet and mobile (hidden xl:flex) because the bottom navigation bar
+  // directly houses these views on mobile/tablet without any horizontal overflow!
   return (
-    <div className="bg-[#0b0d13] border-b border-[#2a2215] px-4 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-md">
+    <div className="hidden xl:flex bg-[#0b0d13] border-b border-[#2a2215] px-4 lg:px-8 py-2.5 items-center justify-between gap-3 shadow-md max-w-full overflow-hidden">
       {/* Return to Sales Dashboard */}
       <button
         onClick={() => onSelectStep('dashboard')}
@@ -31,23 +33,23 @@ export const SalesProcessNav: React.FC<SalesProcessNavProps> = ({
         <span>Dashboard Ventas (P01)</span>
       </button>
 
-      {/* Stepper matching screenshot: (1) Prospecto -> (2) Cotización -> (3) Cierre */}
-      <div className="flex items-center gap-1 sm:gap-2">
+      {/* Stepper: (1) Prospecto -> (2) Cotización -> (3) Cierre */}
+      <div className="flex items-center gap-2">
         {/* Step 1 */}
         <button
           onClick={() => onSelectStep('prospecto')}
-          className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 ${
+          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
             currentStep === 'prospecto'
               ? 'bg-[#d4a34b] text-black shadow-[0_0_14px_rgba(212,163,75,0.5)]'
               : 'bg-[#12151f] border border-[#2c2314] text-slate-300 hover:border-[#d4a34b]/60'
           }`}
         >
-          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] shrink-0 ${
+          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] ${
             currentStep === 'prospecto' ? 'bg-black text-[#d4a34b]' : 'bg-[#211a10] text-[#d4a34b]'
           }`}>
             1
           </span>
-          <span>Prospecto<span className="hidden sm:inline"> / Levantamiento</span></span>
+          <span>Prospecto / Levantamiento</span>
         </button>
 
         <span className="text-[#3f341d] font-bold">›</span>
@@ -55,18 +57,18 @@ export const SalesProcessNav: React.FC<SalesProcessNavProps> = ({
         {/* Step 2 */}
         <button
           onClick={() => canNavigateToCotizacion && onSelectStep('cotizacion')}
-          className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 ${
+          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
             currentStep === 'cotizacion'
               ? 'bg-[#d4a34b] text-black shadow-[0_0_14px_rgba(212,163,75,0.5)]'
               : 'bg-[#12151f] border border-[#2c2314] text-slate-300 hover:border-[#d4a34b]/60'
           }`}
         >
-          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] shrink-0 ${
+          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] ${
             currentStep === 'cotizacion' ? 'bg-black text-[#d4a34b]' : 'bg-[#211a10] text-[#d4a34b]'
           }`}>
             2
           </span>
-          <span>Cotización<span className="hidden sm:inline"> / Seguimiento</span></span>
+          <span>Cotización / Seguimiento</span>
         </button>
 
         <span className="text-[#3f341d] font-bold">›</span>
@@ -74,23 +76,23 @@ export const SalesProcessNav: React.FC<SalesProcessNavProps> = ({
         {/* Step 3 */}
         <button
           onClick={() => canNavigateToCierre && onSelectStep('cierre')}
-          className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 ${
+          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
             currentStep === 'cierre'
               ? 'bg-[#d4a34b] text-black shadow-[0_0_14px_rgba(212,163,75,0.5)]'
               : 'bg-[#12151f] border border-[#2c2314] text-slate-300 hover:border-[#d4a34b]/60'
           }`}
         >
-          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] shrink-0 ${
+          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] ${
             currentStep === 'cierre' ? 'bg-black text-[#d4a34b]' : 'bg-[#211a10] text-[#d4a34b]'
           }`}>
             3
           </span>
-          <span>Cierre<span className="hidden sm:inline"> / Contrato</span></span>
+          <span>Cierre / Contrato</span>
         </button>
       </div>
 
       {/* Principle Badge */}
-      <div className="hidden xl:flex items-center text-[11px] text-slate-400 bg-[#12151e] border border-[#261f13] px-2.5 py-1 rounded">
+      <div className="flex items-center text-[11px] text-slate-400 bg-[#12151e] border border-[#261f13] px-2.5 py-1 rounded">
         <span className="text-[#d4a34b] font-semibold mr-1">Ruta Comercial:</span> Sin recaptura de datos
       </div>
     </div>

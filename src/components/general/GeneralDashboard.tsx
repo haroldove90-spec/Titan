@@ -64,7 +64,7 @@ export const GeneralDashboard: React.FC<GeneralDashboardProps> = ({ onNavigateTo
   ];
 
   return (
-    <div className="p-4 lg:p-8 max-w-7xl mx-auto space-y-6 text-slate-200">
+    <div className="p-3 sm:p-5 lg:p-8 max-w-7xl mx-auto space-y-4 sm:space-y-6 text-slate-200 w-full max-w-full overflow-x-hidden min-w-0">
       {/* Top Banner */}
       <div className="bg-[#10131d] border border-[#2b2416] p-5 rounded-2xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -143,7 +143,7 @@ export const GeneralDashboard: React.FC<GeneralDashboardProps> = ({ onNavigateTo
       </div>
 
       {/* Rentabilidad por Cliente (Sección 20.2 del PDF) */}
-      <div className="bg-[#10131d] border border-[#282115] rounded-xl overflow-hidden shadow-xl space-y-3">
+      <div className="bg-[#10131d] border border-[#282115] rounded-xl overflow-hidden shadow-xl space-y-3 w-full max-w-full">
         <div className="p-4 border-b border-[#211a11] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h3 className="text-sm font-bold text-white flex items-center gap-2">
@@ -159,8 +159,8 @@ export const GeneralDashboard: React.FC<GeneralDashboardProps> = ({ onNavigateTo
           </span>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+        <div className="w-full max-w-full overflow-x-auto block">
+          <table className="w-full text-left text-xs min-w-[720px]">
             <thead className="bg-[#0b0e14] text-slate-400 border-b border-[#211a11] text-[10px] uppercase">
               <tr>
                 <th className="py-3 px-4">Cliente / Inmueble</th>

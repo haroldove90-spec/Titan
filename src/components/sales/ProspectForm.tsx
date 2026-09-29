@@ -78,7 +78,7 @@ export const ProspectForm: React.FC<ProspectFormProps> = ({
   };
 
   return (
-    <div className="p-4 lg:p-6 max-w-7xl mx-auto space-y-5 text-slate-200">
+    <div className="p-3 sm:p-5 lg:p-6 max-w-7xl mx-auto space-y-4 sm:space-y-5 text-slate-200 w-full max-w-full overflow-x-hidden min-w-0">
       {/* Top Title Bar */}
       <div className="flex items-center justify-between bg-[#11141e] border border-[#2d2516] px-5 py-3 rounded-xl shadow-md">
         <div>
@@ -98,17 +98,17 @@ export const ProspectForm: React.FC<ProspectFormProps> = ({
       </div>
 
       {/* Main 2-Column Grid matching Screenshot */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 w-full max-w-full overflow-hidden">
         {/* LEFT COLUMN: 6 or 7 cols */}
-        <div className="lg:col-span-6 space-y-4">
+        <div className="lg:col-span-6 space-y-4 min-w-0">
           {/* Bloque 1: Datos generales del prospecto */}
-          <div className="bg-[#10131d] border border-[#262015] rounded-xl p-4 space-y-3 shadow-lg">
+          <div className="bg-[#10131d] border border-[#262015] rounded-xl p-3.5 sm:p-4 space-y-3 shadow-lg">
             <div className="flex items-center gap-2 text-xs font-bold text-[#d4a34b] border-b border-[#211a11] pb-2">
               <User className="w-3.5 h-3.5" />
               <span>Datos generales del prospecto</span>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
               <div>
                 <label className="block text-slate-400 mb-1">Tipo de prospecto <span className="text-[#f59e0b]">*</span></label>
                 <select
@@ -309,7 +309,7 @@ export const ProspectForm: React.FC<ProspectFormProps> = ({
               <span className="text-[10px] text-slate-500">4 capturas</span>
             </div>
 
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {[
                 { title: 'Fachada', src: formData.photos.fachada },
                 { title: 'Cocina', src: formData.photos.cocina },
@@ -342,15 +342,15 @@ export const ProspectForm: React.FC<ProspectFormProps> = ({
         </div>
 
         {/* RIGHT COLUMN: 6 cols */}
-        <div className="lg:col-span-6 space-y-4">
+        <div className="lg:col-span-6 space-y-4 min-w-0">
           {/* Bloque 5 & 6: Dirección, Mapa y Zona Operativa Automática */}
-          <div className="bg-[#10131d] border border-[#262015] rounded-xl p-4 space-y-3 shadow-lg">
+          <div className="bg-[#10131d] border border-[#262015] rounded-xl p-3.5 sm:p-4 space-y-3 shadow-lg">
             <div className="flex items-center gap-2 text-xs font-bold text-[#d4a34b] border-b border-[#211a11] pb-2">
               <MapPin className="w-3.5 h-3.5" />
               <span>Dirección y ubicación geográfica</span>
             </div>
 
-            <div className="grid grid-cols-3 gap-2.5 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
               <div className="col-span-2">
                 <label className="block text-slate-400 mb-1">Calle <span className="text-[#f59e0b]">*</span></label>
                 <input
@@ -470,9 +470,9 @@ export const ProspectForm: React.FC<ProspectFormProps> = ({
               {formData.reportedPests.map((pestItem) => (
                 <div 
                   key={pestItem.id} 
-                  className="bg-[#141722] border border-[#272115] rounded-lg p-2.5 grid grid-cols-12 gap-2 text-xs items-center"
+                  className="bg-[#141722] border border-[#272115] rounded-lg p-2.5 grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs items-center"
                 >
-                  <div className="col-span-3">
+                  <div className="sm:col-span-3">
                     <label className="text-[10px] text-slate-400 block mb-0.5">Plaga</label>
                     <select
                       value={pestItem.pest}
@@ -490,7 +490,7 @@ export const ProspectForm: React.FC<ProspectFormProps> = ({
                     </select>
                   </div>
 
-                  <div className="col-span-3">
+                  <div className="sm:col-span-3">
                     <label className="text-[10px] text-slate-400 block mb-0.5">Presencia</label>
                     <select
                       value={pestItem.presenceLevel}
@@ -504,7 +504,7 @@ export const ProspectForm: React.FC<ProspectFormProps> = ({
                     </select>
                   </div>
 
-                  <div className="col-span-3">
+                  <div className="sm:col-span-3">
                     <label className="text-[10px] text-slate-400 block mb-0.5">Área afectada</label>
                     <select
                       value={pestItem.affectedArea}
@@ -519,7 +519,7 @@ export const ProspectForm: React.FC<ProspectFormProps> = ({
                     </select>
                   </div>
 
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <label className="text-[10px] text-slate-400 block mb-0.5">Observación</label>
                     <input
                       type="text"
@@ -530,7 +530,7 @@ export const ProspectForm: React.FC<ProspectFormProps> = ({
                     />
                   </div>
 
-                  <div className="col-span-1 text-right pt-4">
+                  <div className="sm:col-span-1 text-right pt-1 sm:pt-4">
                     <button
                       type="button"
                       onClick={() => handleRemovePest(pestItem.id)}
@@ -546,13 +546,13 @@ export const ProspectForm: React.FC<ProspectFormProps> = ({
           </div>
 
           {/* Bloque 9: Agendar visita */}
-          <div className="bg-[#10131d] border border-[#262015] rounded-xl p-4 space-y-3 shadow-lg">
+          <div className="bg-[#10131d] border border-[#262015] rounded-xl p-3.5 sm:p-4 space-y-3 shadow-lg">
             <div className="flex items-center gap-2 text-xs font-bold text-[#d4a34b] border-b border-[#211a11] pb-2">
               <Calendar className="w-3.5 h-3.5" />
               <span>Agenda de visita de levantamiento</span>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
               <div>
                 <label className="block text-slate-400 mb-1">Fecha de visita <span className="text-[#f59e0b]">*</span></label>
                 <div className="relative">

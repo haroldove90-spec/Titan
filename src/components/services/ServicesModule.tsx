@@ -80,7 +80,7 @@ export const ServicesModule: React.FC<ServicesModuleProps> = ({
   };
 
   return (
-    <div className="p-4 lg:p-8 max-w-7xl mx-auto space-y-6 text-slate-200">
+    <div className="p-3 sm:p-5 lg:p-8 max-w-7xl mx-auto space-y-4 sm:space-y-6 text-slate-200 w-full max-w-full overflow-x-hidden min-w-0">
       {/* Top Banner */}
       <div className="bg-[#10131d] border border-[#2b2416] p-5 rounded-2xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>

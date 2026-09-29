@@ -54,75 +54,75 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-[#0d0f15] border-b border-[#2a2415] px-4 lg:px-6 py-2.5 flex items-center justify-between text-slate-200 shadow-xl">
+    <header className="sticky top-0 z-50 bg-[#0d0f15] border-b border-[#2a2415] px-2.5 sm:px-4 lg:px-6 py-2 sm:py-2.5 flex items-center justify-between text-slate-200 shadow-xl w-full max-w-full overflow-hidden">
       {/* Brand & Module Indicator */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4 min-w-0">
         <button
           onClick={onGoHome}
-          className="flex items-center gap-3 text-left group focus:outline-none"
+          className="flex items-center gap-2 sm:gap-3 text-left group focus:outline-none shrink-0"
           title="Ir a Pantalla Principal"
         >
           {/* Spartan Gold Shield Emblem */}
-          <div className="relative w-10 h-11 flex items-center justify-center bg-gradient-to-b from-[#d4a34b] via-[#8f6d28] to-[#42310d] rounded-t-lg rounded-b-2xl p-[1.5px] shadow-lg group-hover:scale-105 transition-transform">
-            <div className="w-full h-full bg-[#0a0c10] rounded-t-[7px] rounded-b-[14px] flex items-center justify-center relative overflow-hidden">
-              <Shield className="w-6 h-6 text-[#f59e0b] drop-shadow-[0_0_8px_rgba(245,158,11,0.6)]" />
+          <div className="relative w-8 h-9 sm:w-10 sm:h-11 flex items-center justify-center bg-gradient-to-b from-[#d4a34b] via-[#8f6d28] to-[#42310d] rounded-t-lg rounded-b-xl p-[1.5px] shadow-lg group-hover:scale-105 transition-transform shrink-0">
+            <div className="w-full h-full bg-[#0a0c10] rounded-t-[6px] rounded-b-[10px] flex items-center justify-center relative overflow-hidden">
+              <Shield className="w-4 h-4 sm:w-6 sm:h-6 text-[#f59e0b] drop-shadow-[0_0_8px_rgba(245,158,11,0.6)]" />
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-[#f59e0b]/10 to-transparent" />
             </div>
           </div>
 
-          <div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="font-brand font-black text-xl tracking-wider text-[#d4a34b] drop-shadow-sm">
+          <div className="min-w-0">
+            <div className="flex items-baseline gap-1">
+              <span className="font-brand font-black text-base sm:text-xl tracking-wider text-[#d4a34b] drop-shadow-sm">
                 TITAN
               </span>
-              <span className="text-[10px] tracking-widest uppercase font-semibold text-slate-400">
-                Pest Control Group
+              <span className="text-[9px] sm:text-[10px] tracking-widest uppercase font-semibold text-slate-400 hidden xs:inline sm:inline truncate">
+                Pest Control
               </span>
             </div>
-            <p className="text-[9px] uppercase tracking-wider text-[#9d834a] font-medium hidden sm:block">
+            <p className="text-[8px] sm:text-[9px] uppercase tracking-wider text-[#9d834a] font-medium hidden md:block">
               Protegemos lo que más importa
             </p>
           </div>
         </button>
 
         {/* Section Divider */}
-        <div className="h-7 w-[1px] bg-[#2d2516] hidden md:block" />
+        <div className="h-6 w-[1px] bg-[#2d2516] hidden md:block" />
 
         {/* Dynamic Context Header */}
-        <div className="hidden sm:block">
-          <div className="flex items-center gap-2">
-            <h1 className="text-sm font-bold text-white tracking-wide">
+        <div className="hidden md:block min-w-0">
+          <div className="flex items-center gap-1.5 truncate">
+            <h1 className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">
               {activeModuleTitle}
             </h1>
             {activeModuleSubtitle && (
               <>
                 <span className="text-slate-600">/</span>
-                <span className="text-xs font-medium text-[#d4a34b]">
+                <span className="text-[11px] sm:text-xs font-medium text-[#d4a34b] truncate">
                   {activeModuleSubtitle}
                 </span>
               </>
             )}
           </div>
-          <p className="text-[11px] text-slate-400">
+          <p className="text-[10px] text-slate-400 truncate">
             Arquitectura Funcional 1.0 (v9) · Capturar una vez, utilizar en toda la empresa
           </p>
         </div>
       </div>
 
       {/* Middle: Quick Search */}
-      <div className="hidden lg:flex items-center flex-1 max-w-xs mx-6">
+      <div className="hidden lg:flex items-center flex-1 max-w-xs mx-4">
         <div className="relative w-full">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
           <input
             type="text"
             placeholder="Buscar prospecto, cliente, folio o servicio..."
-            className="w-full bg-[#13161f] border border-[#2a2416] rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-[#d4a34b] focus:ring-1 focus:ring-[#d4a34b]/40 transition-colors"
+            className="w-full bg-[#13161f] border border-[#2a2416] rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-[#d4a34b] focus:ring-1 focus:ring-[#d4a34b]/40 transition-colors"
           />
         </div>
       </div>
 
       {/* Right: Actions, Date, Notifications & Role Switcher */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
         {/* Home shortcut */}
         <button
           onClick={onGoHome}
@@ -133,7 +133,7 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         {/* System Date & Time indicator */}
-        <div className="hidden xl:flex items-center gap-2 text-xs text-slate-300 bg-[#12151e] border border-[#272014] px-3 py-1 rounded-md">
+        <div className="hidden xl:flex items-center gap-2 text-xs text-slate-300 bg-[#12151e] border border-[#272014] px-2.5 py-1 rounded-md">
           <Clock className="w-3.5 h-3.5 text-[#d4a34b]" />
           <span>29 Sep 2026</span>
           <span className="text-slate-600">|</span>
@@ -147,7 +147,7 @@ export const Header: React.FC<HeaderProps> = ({
             title="Notificaciones de sistema"
           >
             <Bell className="w-4 h-4" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#dc2626] text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-[#0d0f15]">
+            <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-[#dc2626] text-white text-[9px] font-bold rounded-full flex items-center justify-center border-2 border-[#0d0f15]">
               1
             </span>
           </button>
@@ -157,32 +157,32 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="relative">
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex items-center gap-2.5 bg-[#141722] hover:bg-[#1a1f2e] border border-[#382d18] rounded-lg px-2.5 py-1 text-left transition-colors"
+            className="flex items-center gap-1.5 sm:gap-2 bg-[#141722] hover:bg-[#1a1f2e] border border-[#382d18] rounded-lg p-1 sm:px-2.5 sm:py-1 text-left transition-colors"
           >
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#d4a34b] to-[#634816] flex items-center justify-center font-bold text-black text-xs shadow-inner">
+            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gradient-to-br from-[#d4a34b] to-[#634816] flex items-center justify-center font-bold text-black text-[11px] sm:text-xs shadow-inner shrink-0">
               {roleInfo.user.charAt(0)}
             </div>
-            <div className="hidden md:block leading-tight">
-              <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                <span>{roleInfo.user}</span>
+            <div className="hidden md:block leading-tight max-w-[120px]">
+              <div className="text-xs font-bold text-white truncate">
+                {roleInfo.user}
               </div>
-              <div className="text-[10px] text-[#d4a34b] font-medium">
+              <div className="text-[10px] text-[#d4a34b] font-medium truncate">
                 {roleInfo.badge}
               </div>
             </div>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-1" />
+            <ChevronDown className="w-3 h-3 text-slate-400" />
           </button>
 
           {dropdownOpen && (
             <div 
-              className="absolute right-0 mt-2 w-72 bg-[#12151e] border border-[#423319] rounded-xl shadow-2xl p-2 z-50 backdrop-blur-md"
+              className="absolute right-0 mt-2 w-64 sm:w-72 bg-[#12151e] border border-[#423319] rounded-xl shadow-2xl p-2 z-50 backdrop-blur-md"
               onMouseLeave={() => setDropdownOpen(false)}
             >
               <div className="px-2 py-1.5 border-b border-[#251f14] mb-1 flex items-center justify-between">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#d4a34b] flex items-center gap-1">
                   <SlidersHorizontal className="w-3 h-3" /> Cambiar Rol Activo
                 </span>
-                <span className="text-[9px] text-slate-400">Simulación Multi-Rol</span>
+                <span className="text-[9px] text-slate-400">7 Roles</span>
               </div>
 
               {(Object.keys(ROLE_LABELS) as UserRole[]).map((roleKey) => {
@@ -201,11 +201,11 @@ export const Header: React.FC<HeaderProps> = ({
                         : 'text-slate-300 hover:bg-[#1a1e2b] hover:text-white'
                     }`}
                   >
-                    <div>
-                      <div className="font-medium">{item.title}</div>
-                      <div className="text-[10px] text-slate-400">{item.user} · {item.badge}</div>
+                    <div className="truncate pr-2">
+                      <div className="font-medium truncate">{item.title}</div>
+                      <div className="text-[10px] text-slate-400 truncate">{item.user} · {item.badge}</div>
                     </div>
-                    {isSelected && <UserCheck className="w-4 h-4 text-[#f59e0b]" />}
+                    {isSelected && <UserCheck className="w-4 h-4 text-[#f59e0b] shrink-0" />}
                   </button>
                 );
               })}

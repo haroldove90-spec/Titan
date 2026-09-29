@@ -175,7 +175,7 @@ export default function App() {
   const { title: activeTitle, subtitle: activeSubtitle } = getContextualHeaders();
 
   return (
-    <div className="min-h-screen bg-[#08090d] text-slate-100 flex flex-col selection:bg-[#f59e0b] selection:text-black">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#08090d] text-slate-100 flex flex-col selection:bg-[#f59e0b] selection:text-black relative">
       {/* Institutional Titan Header */}
       <Header
         currentRole={currentRole}
@@ -205,7 +205,7 @@ export default function App() {
 
       {/* Secondary Subnav for Quick Cross-Module Switching: Desktop only (hidden on tablet & mobile) */}
       {activeModule !== 'hub' && (
-        <div className="hidden lg:flex bg-[#0b0e15] border-b border-[#211a11] px-4 lg:px-8 py-1.5 items-center justify-between text-xs text-slate-400 overflow-x-auto whitespace-nowrap gap-2">
+        <div className="hidden xl:flex bg-[#0b0e15] border-b border-[#211a11] px-4 lg:px-8 py-1.5 items-center justify-between text-xs text-slate-400 overflow-x-hidden whitespace-nowrap gap-2 w-full max-w-full">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setActiveModule('hub')}
@@ -298,7 +298,7 @@ export default function App() {
       )}
 
       {/* Main View Area with Bottom Padding on Tablet/Mobile */}
-      <main className="flex-1 pb-24 lg:pb-6">
+      <main className="flex-1 pb-24 xl:pb-6 w-full max-w-full overflow-x-hidden min-w-0">
         {/* Hub / Pantalla Principal */}
         {activeModule === 'hub' && (
           <HubNavigation
@@ -445,11 +445,12 @@ export default function App() {
         )}
       </main>
 
-      {/* Mobile and Tablet Bottom Navigation Bar (App-like experience) */}
+      {/* Mobile and Tablet Bottom Navigation Bar (Role specific modules, zero overflow) */}
       <MobileBottomNav
         activeModule={activeModule}
         currentRole={currentRole}
-        onNavigate={(mod) => {
+        salesStep={salesStep}
+        onNavigateModule={(mod) => {
           if (mod === 'ventas') {
             setActiveModule('ventas');
             setSalesStep('dashboard');
@@ -457,7 +458,10 @@ export default function App() {
             setActiveModule(mod);
           }
         }}
-        onOpenRoleModal={() => setIsRoleModalOpen(true)}
+        onSelectSalesStep={(step) => {
+          setActiveModule('ventas');
+          setSalesStep(step);
+        }}
       />
 
       {/* Master Role Switcher and Logout Modal */}
@@ -485,7 +489,7 @@ export default function App() {
       />
 
       {/* Global Footer Note (hidden on mobile/tablet to give room to bottom bar) */}
-      <footer className="hidden lg:block bg-[#07080b] border-t border-[#1f190e] py-3 px-6 text-center text-[11px] text-slate-500">
+      <footer className="hidden xl:block bg-[#07080b] border-t border-[#1f190e] py-3 px-6 text-center text-[11px] text-slate-500">
         TITAN PEST CONTROL GROUP · Arquitectura Funcional 1.0 (v9) · Todos los derechos reservados · NOM-256-SSA1-2012 / COFEPRIS
       </footer>
     </div>

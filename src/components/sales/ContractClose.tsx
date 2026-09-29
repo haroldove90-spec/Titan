@@ -178,7 +178,7 @@ export const ContractClose: React.FC<ContractCloseProps> = ({
   };
 
   return (
-    <div className="p-4 lg:p-6 max-w-7xl mx-auto space-y-5 text-slate-200">
+    <div className="p-3 sm:p-5 lg:p-6 max-w-7xl mx-auto space-y-4 sm:space-y-5 text-slate-200 w-full max-w-full overflow-x-hidden min-w-0">
       {/* Top Banner: Información del cliente (precargada) matching screenshot */}
       <div className="bg-[#10131d] border border-[#2d2516] rounded-xl p-4 shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#241c12] pb-3 mb-3">
@@ -229,9 +229,9 @@ export const ContractClose: React.FC<ContractCloseProps> = ({
       </div>
 
       {/* Main 2-Column Grid: Left (Forms) + Right (Contract Live Preview with Signatures) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 w-full max-w-full min-w-0 overflow-hidden">
         {/* LEFT COLUMN: 6 or 7 cols */}
-        <div className="lg:col-span-7 space-y-4">
+        <div className="lg:col-span-7 space-y-4 min-w-0 w-full">
           {/* Bloque 1: Datos fiscales (para facturación) */}
           <div className="bg-[#10131d] border border-[#262015] rounded-xl p-4 space-y-3 shadow-lg">
             <div className="flex items-center justify-between border-b border-[#211a11] pb-2">
@@ -509,7 +509,7 @@ export const ContractClose: React.FC<ContractCloseProps> = ({
         </div>
 
         {/* RIGHT COLUMN: 5 cols (Contrato digital vista previa con firmas en tiempo real) */}
-        <div className="lg:col-span-5 space-y-4">
+        <div className="lg:col-span-5 space-y-4 min-w-0 w-full">
           <div className="bg-[#10131d] border border-[#282115] rounded-xl p-4 space-y-3 shadow-xl">
             <div className="flex items-center justify-between border-b border-[#211a11] pb-2">
               <span className="text-xs font-bold text-white flex items-center gap-1.5">

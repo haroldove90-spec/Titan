@@ -219,7 +219,7 @@ export const QuoteEngine: React.FC<QuoteEngineProps> = ({
   };
 
   return (
-    <div className="p-4 lg:p-6 max-w-7xl mx-auto space-y-5 text-slate-200">
+    <div className="p-3 sm:p-5 lg:p-6 max-w-7xl mx-auto space-y-4 sm:space-y-5 text-slate-200 w-full max-w-full overflow-x-hidden min-w-0">
       {/* Top Banner: Información del cliente (precargada) exactly matching screenshot */}
       <div className="bg-[#10131d] border border-[#2d2516] rounded-xl p-4 shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#241c12] pb-3 mb-3">
@@ -280,9 +280,9 @@ export const QuoteEngine: React.FC<QuoteEngineProps> = ({
       </div>
 
       {/* Main Split: Left (Cotización & Motor Oculto) + Right (Condiciones Comerciales) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 w-full max-w-full min-w-0 overflow-hidden">
         {/* LEFT COLUMN: 8 cols */}
-        <div className="lg:col-span-8 space-y-4">
+        <div className="lg:col-span-8 space-y-4 min-w-0 w-full">
           {/* Section 1: Cotización de servicios (mensual) */}
           <div className="bg-[#10131d] border border-[#282115] rounded-xl p-4 space-y-4 shadow-xl">
             <div className="flex items-center justify-between border-b border-[#211a11] pb-2.5">
@@ -497,8 +497,8 @@ export const QuoteEngine: React.FC<QuoteEngineProps> = ({
             </div>
 
             {/* Breakdown Table: Conceptos del Contrato */}
-            <div className="border border-[#262015] rounded-lg overflow-hidden">
-              <table className="w-full text-left text-xs">
+            <div className="border border-[#262015] rounded-lg overflow-x-auto w-full max-w-full">
+              <table className="w-full text-left text-xs min-w-[500px]">
                 <thead className="bg-[#0b0e14] text-slate-400 border-b border-[#241c12] text-[10px] uppercase">
                   <tr>
                     <th className="py-2.5 px-3">Servicio / Concepto</th>
@@ -594,7 +594,7 @@ export const QuoteEngine: React.FC<QuoteEngineProps> = ({
         </div>
 
         {/* RIGHT COLUMN: 4 cols (Condiciones comerciales & Quick dispatch) */}
-        <div className="lg:col-span-4 space-y-4">
+        <div className="lg:col-span-4 space-y-4 min-w-0 w-full">
           <div className="bg-[#10131d] border border-[#282115] rounded-xl p-4 space-y-3.5 shadow-xl">
             <div className="flex items-center justify-between border-b border-[#211a11] pb-2">
               <span className="text-xs font-bold text-[#d4a34b]">
@@ -708,8 +708,8 @@ export const QuoteEngine: React.FC<QuoteEngineProps> = ({
           </button>
         </div>
 
-        <div className="border border-[#231b11] rounded-lg overflow-x-auto">
-          <table className="w-full text-left text-xs">
+        <div className="border border-[#231b11] rounded-lg overflow-x-auto w-full max-w-full">
+          <table className="w-full text-left text-xs min-w-[620px]">
             <thead className="bg-[#0b0e14] text-slate-400 border-b border-[#231b11] text-[10px] uppercase">
               <tr>
                 <th className="py-2.5 px-3">Fecha</th>

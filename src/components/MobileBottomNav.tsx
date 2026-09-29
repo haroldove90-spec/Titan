@@ -1,217 +1,350 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   Home, 
-  LayoutGrid, 
-  UserCircle2, 
-  Handshake, 
+  LayoutDashboard, 
+  UserPlus, 
+  FileSpreadsheet, 
+  FileCheck, 
+  Navigation, 
   Bug, 
+  ShieldAlert, 
+  Package, 
   Coins, 
+  Fingerprint, 
+  FileText, 
   FlaskConical, 
   Building2, 
-  Settings2, 
-  Package, 
-  Fingerprint, 
-  Users, 
-  LogOut, 
-  X,
-  ShieldAlert,
-  ChevronUp
+  Handshake, 
+  Award,
+  Layers
 } from 'lucide-react';
 import { UserRole } from '../types/titan';
-import { ROLE_LABELS } from './Header';
+import { SalesStep } from './sales/SalesProcessNav';
 
 interface MobileBottomNavProps {
   activeModule: string;
   currentRole: UserRole;
-  onNavigate: (moduleKey: string) => void;
-  onOpenRoleModal: () => void;
+  salesStep: SalesStep;
+  onNavigateModule: (moduleKey: string) => void;
+  onSelectSalesStep: (step: SalesStep) => void;
+}
+
+interface BottomNavItem {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  isActive: boolean;
+  onClick: () => void;
 }
 
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   activeModule,
   currentRole,
-  onNavigate,
-  onOpenRoleModal,
+  salesStep,
+  onNavigateModule,
+  onSelectSalesStep,
 }) => {
-  const [showModulesSheet, setShowModulesSheet] = useState(false);
-  const currentRoleInfo = ROLE_LABELS[currentRole];
+  // If user is inside the Ventas module (or current role is Ventas):
+  // Expose the 4 views of Ventas + Inicio in the bottom bar!
+  const isVentasMode = activeModule === 'ventas' || currentRole === 'ventas';
 
-  // Helper to get icon for active module or current role
-  const getRoleModuleIcon = () => {
-    switch (currentRole) {
-      case 'ventas':
-        return <Handshake className="w-5 h-5" />;
-      case 'servicios':
-        return <Bug className="w-5 h-5" />;
-      case 'administracion':
-        return <Coins className="w-5 h-5" />;
-      case 'responsable_sanitario':
-        return <FlaskConical className="w-5 h-5" />;
-      case 'crm_clientes':
-        return <Users className="w-5 h-5" />;
-      case 'direccion_operaciones':
-        return <Settings2 className="w-5 h-5" />;
-      default:
-        return <Building2 className="w-5 h-5" />;
+  const getItemsForCurrentRole = (): BottomNavItem[] => {
+    if (isVentasMode) {
+      return [
+        {
+          id: 'hub',
+          label: 'Inicio',
+          icon: <Home className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'hub',
+          onClick: () => onNavigateModule('hub'),
+        },
+        {
+          id: 'p01',
+          label: 'P01 Dash',
+          icon: <LayoutDashboard className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'ventas' && salesStep === 'dashboard',
+          onClick: () => {
+            onNavigateModule('ventas');
+            onSelectSalesStep('dashboard');
+          },
+        },
+        {
+          id: 'p02',
+          label: 'P02 Prosp',
+          icon: <UserPlus className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'ventas' && salesStep === 'prospecto',
+          onClick: () => {
+            onNavigateModule('ventas');
+            onSelectSalesStep('prospecto');
+          },
+        },
+        {
+          id: 'p03',
+          label: 'P03 Cotiz',
+          icon: <FileSpreadsheet className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'ventas' && salesStep === 'cotizacion',
+          onClick: () => {
+            onNavigateModule('ventas');
+            onSelectSalesStep('cotizacion');
+          },
+        },
+        {
+          id: 'p04',
+          label: 'P04 Cierre',
+          icon: <FileCheck className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'ventas' && salesStep === 'cierre',
+          onClick: () => {
+            onNavigateModule('ventas');
+            onSelectSalesStep('cierre');
+          },
+        },
+      ];
     }
+
+    if (currentRole === 'direccion_operaciones') {
+      return [
+        {
+          id: 'hub',
+          label: 'Inicio',
+          icon: <Home className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'hub',
+          onClick: () => onNavigateModule('hub'),
+        },
+        {
+          id: 'servicios',
+          label: 'Operaciones',
+          icon: <Bug className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'servicios',
+          onClick: () => onNavigateModule('servicios'),
+        },
+        {
+          id: 'mip',
+          label: 'Red MIP',
+          icon: <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'mip',
+          onClick: () => onNavigateModule('mip'),
+        },
+        {
+          id: 'inventario',
+          label: 'Químicos',
+          icon: <Package className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'inventario',
+          onClick: () => onNavigateModule('inventario'),
+        },
+        {
+          id: 'biometria',
+          label: 'Asistencia',
+          icon: <Fingerprint className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'biometria',
+          onClick: () => onNavigateModule('biometria'),
+        },
+      ];
+    }
+
+    if (currentRole === 'servicios') {
+      return [
+        {
+          id: 'hub',
+          label: 'Inicio',
+          icon: <Home className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'hub',
+          onClick: () => onNavigateModule('hub'),
+        },
+        {
+          id: 'servicios',
+          label: 'Rutas / Agenda',
+          icon: <Navigation className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'servicios',
+          onClick: () => onNavigateModule('servicios'),
+        },
+        {
+          id: 'mip',
+          label: 'MIP Croquis',
+          icon: <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'mip',
+          onClick: () => onNavigateModule('mip'),
+        },
+        {
+          id: 'inventario',
+          label: 'Químicos',
+          icon: <Package className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'inventario',
+          onClick: () => onNavigateModule('inventario'),
+        },
+        {
+          id: 'biometria',
+          label: 'Asistencia',
+          icon: <Fingerprint className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'biometria',
+          onClick: () => onNavigateModule('biometria'),
+        },
+      ];
+    }
+
+    if (currentRole === 'administracion') {
+      return [
+        {
+          id: 'hub',
+          label: 'Inicio',
+          icon: <Home className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'hub',
+          onClick: () => onNavigateModule('hub'),
+        },
+        {
+          id: 'administracion',
+          label: 'CxC / Banco',
+          icon: <Coins className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'administracion',
+          onClick: () => onNavigateModule('administracion'),
+        },
+        {
+          id: 'biometria',
+          label: 'Nómina',
+          icon: <Fingerprint className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'biometria',
+          onClick: () => onNavigateModule('biometria'),
+        },
+        {
+          id: 'ventas',
+          label: 'Contratos',
+          icon: <FileText className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'ventas',
+          onClick: () => {
+            onNavigateModule('ventas');
+            onSelectSalesStep('dashboard');
+          },
+        },
+      ];
+    }
+
+    if (currentRole === 'responsable_sanitario') {
+      return [
+        {
+          id: 'hub',
+          label: 'Inicio',
+          icon: <Home className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'hub',
+          onClick: () => onNavigateModule('hub'),
+        },
+        {
+          id: 'responsable_sanitario',
+          label: 'Bitácoras NOM',
+          icon: <FlaskConical className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'responsable_sanitario',
+          onClick: () => onNavigateModule('responsable_sanitario'),
+        },
+        {
+          id: 'inventario',
+          label: 'Lotes Químicos',
+          icon: <Package className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'inventario',
+          onClick: () => onNavigateModule('inventario'),
+        },
+        {
+          id: 'mip',
+          label: 'Estaciones MIP',
+          icon: <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'mip',
+          onClick: () => onNavigateModule('mip'),
+        },
+      ];
+    }
+
+    if (currentRole === 'crm_clientes') {
+      return [
+        {
+          id: 'hub',
+          label: 'Inicio',
+          icon: <Home className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'hub',
+          onClick: () => onNavigateModule('hub'),
+        },
+        {
+          id: 'crm_clientes',
+          label: 'Certificados',
+          icon: <Award className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'crm_clientes',
+          onClick: () => onNavigateModule('crm_clientes'),
+        },
+        {
+          id: 'mip',
+          label: 'Red MIP',
+          icon: <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5" />,
+          isActive: activeModule === 'mip',
+          onClick: () => onNavigateModule('mip'),
+        },
+      ];
+    }
+
+    // Default: Dirección General
+    return [
+      {
+        id: 'hub',
+        label: 'Inicio',
+        icon: <Home className="w-4 h-4 sm:w-5 sm:h-5" />,
+        isActive: activeModule === 'hub',
+        onClick: () => onNavigateModule('hub'),
+      },
+      {
+        id: 'direccion_general',
+        label: 'Dirección',
+        icon: <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />,
+        isActive: activeModule === 'direccion_general',
+        onClick: () => onNavigateModule('direccion_general'),
+      },
+      {
+        id: 'ventas',
+        label: 'Ventas',
+        icon: <Handshake className="w-4 h-4 sm:w-5 sm:h-5" />,
+        isActive: activeModule === 'ventas',
+        onClick: () => {
+          onNavigateModule('ventas');
+          onSelectSalesStep('dashboard');
+        },
+      },
+      {
+        id: 'servicios',
+        label: 'Servicios',
+        icon: <Bug className="w-4 h-4 sm:w-5 sm:h-5" />,
+        isActive: activeModule === 'servicios',
+        onClick: () => onNavigateModule('servicios'),
+      },
+      {
+        id: 'administracion',
+        label: 'Finanzas',
+        icon: <Coins className="w-4 h-4 sm:w-5 sm:h-5" />,
+        isActive: activeModule === 'administracion',
+        onClick: () => onNavigateModule('administracion'),
+      },
+    ];
   };
 
-  const allModulesList = [
-    { key: 'direccion_general', label: 'Dirección General', icon: <Building2 className="w-5 h-5 text-[#f59e0b]" />, desc: 'KPIs y margen' },
-    { key: 'direccion_operaciones', label: 'Operaciones', icon: <Settings2 className="w-5 h-5 text-[#f59e0b]" />, desc: 'Rutas y técnicos' },
-    { key: 'ventas', label: 'Ventas Comercial', icon: <Handshake className="w-5 h-5 text-[#f59e0b]" />, desc: 'P01 a P04' },
-    { key: 'servicios', label: 'Servicios de Campo', icon: <Bug className="w-5 h-5 text-[#f59e0b]" />, desc: 'Check-in y bitácoras' },
-    { key: 'mip', label: 'MIP Estaciones', icon: <ShieldAlert className="w-5 h-5 text-[#f59e0b]" />, desc: 'Croquis y monitoreo' },
-    { key: 'inventario', label: 'Inventario Químico', icon: <Package className="w-5 h-5 text-[#f59e0b]" />, desc: 'Lotes y COFEPRIS' },
-    { key: 'administracion', label: 'Administración / CxC', icon: <Coins className="w-5 h-5 text-[#f59e0b]" />, desc: 'Facturación y banco' },
-    { key: 'biometria', label: 'Biometría & Personal', icon: <Fingerprint className="w-5 h-5 text-[#f59e0b]" />, desc: 'Huella y nómina' },
-    { key: 'responsable_sanitario', label: 'Sanitario NOM-256', icon: <FlaskConical className="w-5 h-5 text-[#f59e0b]" />, desc: 'Certificados oficiales' },
-    { key: 'crm_clientes', label: 'Portal Cliente', icon: <Users className="w-5 h-5 text-[#f59e0b]" />, desc: 'Expediente digital' },
-  ];
+  const navItems = getItemsForCurrentRole();
 
   return (
-    <>
-      {/* Bottom Sheet Drawer for All Modules */}
-      {showModulesSheet && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 lg:hidden flex flex-col justify-end">
-          <div className="bg-[#10131d] border-t-2 border-[#d4a34b] rounded-t-3xl p-5 space-y-4 max-h-[80vh] overflow-y-auto animate-in slide-in-from-bottom duration-300">
-            {/* Sheet Handle & Header */}
-            <div className="flex items-center justify-between border-b border-[#292214] pb-3">
-              <div>
-                <span className="text-[10px] uppercase font-bold tracking-widest text-[#f59e0b]">
-                  Sistema TITAN Mobile
-                </span>
-                <h3 className="text-base font-bold text-white">
-                  Módulos del Sistema por Rol
-                </h3>
-              </div>
-              <button
-                onClick={() => setShowModulesSheet(false)}
-                className="p-1.5 text-slate-400 hover:text-white bg-[#191d29] rounded-lg"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Grid of All Role Modules */}
-            <div className="grid grid-cols-2 gap-2.5">
-              {allModulesList.map((m) => {
-                const isCurrent = activeModule === m.key;
-                return (
-                  <button
-                    key={m.key}
-                    type="button"
-                    onClick={() => {
-                      onNavigate(m.key);
-                      setShowModulesSheet(false);
-                    }}
-                    className={`p-3 rounded-xl border text-left flex items-start gap-2.5 transition-all ${
-                      isCurrent
-                        ? 'bg-[#291f0d] border-[#f59e0b] shadow-[0_0_12px_rgba(245,158,11,0.25)]'
-                        : 'bg-[#151926] border-[#292215] hover:bg-[#1a2030]'
-                    }`}
-                  >
-                    <div className="p-2 rounded-lg bg-[#0e1017] border border-[#2d2417] shrink-0">
-                      {m.icon}
-                    </div>
-                    <div className="overflow-hidden">
-                      <div className="text-xs font-bold text-white truncate">
-                        {m.label}
-                      </div>
-                      <div className="text-[10px] text-slate-400 truncate">
-                        {m.desc}
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Quick Role switch button inside sheet */}
-            <div className="pt-2 border-t border-[#292214] flex gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setShowModulesSheet(false);
-                  onOpenRoleModal();
-                }}
-                className="w-full flex items-center justify-center gap-2 bg-[#1b170e] hover:bg-[#2c2211] border border-[#423418] text-[#d4a34b] font-bold py-2.5 rounded-xl text-xs"
-              >
-                <UserCircle2 className="w-4 h-4" />
-                <span>Cambiar Rol / Cerrar Sesión</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Main Sticky Bottom Navigation Bar for Mobile and Tablet (lg:hidden) */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-[#0d0f16]/95 backdrop-blur-xl border-t border-[#2e2617] px-3 py-1.5 flex items-center justify-around lg:hidden shadow-[0_-8px_20px_rgba(0,0,0,0.6)]">
-        {/* Tab 1: Hub / Inicio */}
+    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-[#0c0e15]/95 backdrop-blur-xl border-t border-[#332714] px-1 sm:px-4 py-1.5 flex items-center justify-around xl:hidden shadow-[0_-10px_25px_rgba(0,0,0,0.7)] w-full max-w-full overflow-hidden select-none">
+      {navItems.map((item) => (
         <button
-          onClick={() => onNavigate('hub')}
-          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl min-w-[64px] min-h-[44px] transition-colors ${
-            activeModule === 'hub'
+          key={item.id}
+          type="button"
+          onClick={item.onClick}
+          className={`flex flex-col items-center justify-center py-1 px-1 sm:px-2 rounded-xl flex-1 max-w-[85px] min-h-[44px] transition-all ${
+            item.isActive
               ? 'text-[#f59e0b]'
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
-          <Home className="w-5 h-5 mb-0.5" />
-          <span className="text-[10px] font-semibold">Inicio</span>
-          {activeModule === 'hub' && (
-            <span className="w-1.5 h-1.5 rounded-full bg-[#f59e0b] mt-0.5" />
+          <div className={`p-1 rounded-lg transition-transform ${item.isActive ? 'scale-110 bg-[#2b200e] text-[#f59e0b]' : ''}`}>
+            {item.icon}
+          </div>
+          <span className={`text-[9px] sm:text-[10px] leading-tight truncate w-full text-center mt-0.5 ${item.isActive ? 'font-bold text-[#f59e0b]' : 'font-medium'}`}>
+            {item.label}
+          </span>
+          {item.isActive && (
+            <span className="w-1.5 h-1.5 rounded-full bg-[#f59e0b] mt-0.5 shadow-[0_0_6px_#f59e0b]" />
           )}
         </button>
-
-        {/* Tab 2: Mi Rol / Módulo Principal */}
-        <button
-          onClick={() => {
-            if (currentRole === 'ventas') onNavigate('ventas');
-            else if (currentRole === 'servicios') onNavigate('servicios');
-            else if (currentRole === 'administracion') onNavigate('administracion');
-            else if (currentRole === 'responsable_sanitario') onNavigate('responsable_sanitario');
-            else if (currentRole === 'crm_clientes') onNavigate('crm_clientes');
-            else onNavigate('direccion_general');
-          }}
-          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl min-w-[64px] min-h-[44px] transition-colors ${
-            activeModule !== 'hub' && (activeModule === currentRole || activeModule === 'ventas' || activeModule === 'servicios')
-              ? 'text-[#f59e0b]'
-              : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          <div className="relative">
-            {getRoleModuleIcon()}
-            <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#f59e0b]" />
-          </div>
-          <span className="text-[10px] font-semibold truncate max-w-[70px]">
-            {currentRole === 'ventas' ? 'Ventas' : currentRole === 'servicios' ? 'Servicios' : 'Mi Rol'}
-          </span>
-        </button>
-
-        {/* Tab 3: Módulos (Grid Launcher) */}
-        <button
-          onClick={() => setShowModulesSheet(true)}
-          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl min-w-[64px] min-h-[44px] transition-colors ${
-            showModulesSheet
-              ? 'text-[#f59e0b]'
-              : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          <div className="w-6 h-6 rounded-lg bg-[#1f190e] border border-[#d4a34b]/40 flex items-center justify-center text-[#f59e0b] shadow-inner mb-0.5">
-            <LayoutGrid className="w-3.5 h-3.5" />
-          </div>
-          <span className="text-[10px] font-bold text-[#d4a34b]">Módulos</span>
-        </button>
-
-        {/* Tab 4: Roles / Cerrar Sesión */}
-        <button
-          onClick={onOpenRoleModal}
-          className="flex flex-col items-center justify-center py-1 px-3 rounded-xl min-w-[64px] min-h-[44px] text-slate-400 hover:text-slate-200 transition-colors"
-        >
-          <UserCircle2 className="w-5 h-5 mb-0.5" />
-          <span className="text-[10px] font-semibold">Roles / Salir</span>
-        </button>
-      </nav>
-    </>
+      ))}
+    </nav>
   );
 };

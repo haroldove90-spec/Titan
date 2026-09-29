@@ -48,7 +48,7 @@ export const InventoryModule: React.FC<InventoryModuleProps> = ({ chemicals }) =
   };
 
   return (
-    <div className="p-4 lg:p-8 max-w-7xl mx-auto space-y-6 text-slate-200">
+    <div className="p-3 sm:p-5 lg:p-8 max-w-7xl mx-auto space-y-4 sm:space-y-6 text-slate-200 w-full max-w-full overflow-x-hidden min-w-0">
       {/* Top Banner */}
       <div className="bg-[#10131d] border border-[#2b2416] p-5 rounded-2xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -75,7 +75,7 @@ export const InventoryModule: React.FC<InventoryModuleProps> = ({ chemicals }) =
       </div>
 
       {/* Search and Table */}
-      <div className="bg-[#10131d] border border-[#282115] rounded-xl overflow-hidden shadow-xl">
+      <div className="bg-[#10131d] border border-[#282115] rounded-xl overflow-hidden shadow-xl w-full max-w-full">
         <div className="p-4 border-b border-[#211a11] flex flex-wrap items-center justify-between gap-3">
           <div className="relative w-full max-w-xs">
             <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
@@ -93,8 +93,8 @@ export const InventoryModule: React.FC<InventoryModuleProps> = ({ chemicals }) =
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+        <div className="w-full max-w-full overflow-x-auto block">
+          <table className="w-full text-left text-xs min-w-[680px]">
             <thead className="bg-[#0b0e14] text-slate-400 border-b border-[#211a11] text-[10px] uppercase">
               <tr>
                 <th className="py-3 px-4">Producto Comercial</th>

@@ -24,7 +24,7 @@ export const CrmClientPortal: React.FC<CrmClientPortalProps> = ({
   mipStations,
 }) => {
   return (
-    <div className="p-4 lg:p-8 max-w-7xl mx-auto space-y-6 text-slate-200">
+    <div className="p-3 sm:p-5 lg:p-8 max-w-7xl mx-auto space-y-4 sm:space-y-6 text-slate-200 w-full max-w-full overflow-x-hidden min-w-0">
       {/* Top Banner */}
       <div className="bg-[#10131d] border border-[#2b2416] p-5 rounded-2xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -50,9 +50,9 @@ export const CrmClientPortal: React.FC<CrmClientPortalProps> = ({
       </div>
 
       {/* Main Grid: Services History & MIP Status */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 w-full max-w-full min-w-0 overflow-hidden">
         {/* Left: Certificados de Servicio NOM-256 */}
-        <div className="lg:col-span-8 bg-[#10131d] border border-[#282115] rounded-xl overflow-hidden shadow-xl">
+        <div className="lg:col-span-8 bg-[#10131d] border border-[#282115] rounded-xl overflow-hidden shadow-xl min-w-0 w-full">
           <div className="p-4 border-b border-[#211a11] flex items-center justify-between">
             <h3 className="text-sm font-bold text-white flex items-center gap-2">
               <FileCheck className="w-4 h-4 text-[#d4a34b]" />
@@ -97,7 +97,7 @@ export const CrmClientPortal: React.FC<CrmClientPortalProps> = ({
         </div>
 
         {/* Right: Estaciones de Monitoreo MIP */}
-        <div className="lg:col-span-4 bg-[#10131d] border border-[#282115] rounded-xl p-4 shadow-xl space-y-3">
+        <div className="lg:col-span-4 bg-[#10131d] border border-[#282115] rounded-xl p-4 shadow-xl space-y-3 min-w-0 w-full">
           <div className="border-b border-[#211a11] pb-2">
             <span className="text-xs font-bold text-[#d4a34b]">
               Red de Monitoreo MIP en su Inmueble

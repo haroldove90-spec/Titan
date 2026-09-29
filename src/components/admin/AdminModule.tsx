@@ -33,7 +33,7 @@ export const AdminModule: React.FC<AdminModuleProps> = ({ accounts }) => {
   };
 
   return (
-    <div className="p-4 lg:p-8 max-w-7xl mx-auto space-y-6 text-slate-200">
+    <div className="p-3 sm:p-5 lg:p-8 max-w-7xl mx-auto space-y-4 sm:space-y-6 text-slate-200 w-full max-w-full overflow-x-hidden min-w-0">
       {/* Top Banner */}
       <div className="bg-[#10131d] border border-[#2b2416] p-5 rounded-2xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -61,10 +61,10 @@ export const AdminModule: React.FC<AdminModuleProps> = ({ accounts }) => {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-[#241c12] pb-2 text-xs">
+      <div className="flex flex-wrap items-center gap-2 border-b border-[#241c12] pb-2 text-xs w-full">
         <button
           onClick={() => setActiveTab('cxc')}
-          className={`px-4 py-2 rounded-lg font-bold transition-colors ${
+          className={`px-3 sm:px-4 py-2 rounded-lg font-bold transition-colors ${
             activeTab === 'cxc'
               ? 'bg-[#d4a34b] text-black shadow'
               : 'text-slate-400 hover:text-white hover:bg-[#161a25]'
@@ -74,7 +74,7 @@ export const AdminModule: React.FC<AdminModuleProps> = ({ accounts }) => {
         </button>
         <button
           onClick={() => setActiveTab('conciliacion')}
-          className={`px-4 py-2 rounded-lg font-bold transition-colors ${
+          className={`px-3 sm:px-4 py-2 rounded-lg font-bold transition-colors ${
             activeTab === 'conciliacion'
               ? 'bg-[#d4a34b] text-black shadow'
               : 'text-slate-400 hover:text-white hover:bg-[#161a25]'
@@ -84,7 +84,7 @@ export const AdminModule: React.FC<AdminModuleProps> = ({ accounts }) => {
         </button>
         <button
           onClick={() => setActiveTab('facturacion')}
-          className={`px-4 py-2 rounded-lg font-bold transition-colors ${
+          className={`px-3 sm:px-4 py-2 rounded-lg font-bold transition-colors ${
             activeTab === 'facturacion'
               ? 'bg-[#d4a34b] text-black shadow'
               : 'text-slate-400 hover:text-white hover:bg-[#161a25]'
@@ -95,7 +95,7 @@ export const AdminModule: React.FC<AdminModuleProps> = ({ accounts }) => {
       </div>
 
       {/* Main Table View */}
-      <div className="bg-[#10131d] border border-[#282115] rounded-xl overflow-hidden shadow-xl">
+      <div className="bg-[#10131d] border border-[#282115] rounded-xl overflow-hidden shadow-xl w-full max-w-full">
         <div className="p-4 border-b border-[#211a11] flex items-center justify-between">
           <h3 className="text-sm font-bold text-white flex items-center gap-2">
             <Coins className="w-4 h-4 text-[#d4a34b]" />
@@ -106,8 +106,8 @@ export const AdminModule: React.FC<AdminModuleProps> = ({ accounts }) => {
           </span>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+        <div className="w-full max-w-full overflow-x-auto block">
+          <table className="w-full text-left text-xs min-w-[650px]">
             <thead className="bg-[#0b0e14] text-slate-400 border-b border-[#211a11] text-[10px] uppercase">
               <tr>
                 <th className="py-3 px-4">Folio Factura</th>

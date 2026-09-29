@@ -22,7 +22,7 @@ export const MipModule: React.FC<MipModuleProps> = ({ stations }) => {
   const [activeTab, setActiveTab] = useState<'croquis' | 'lista'>('croquis');
 
   return (
-    <div className="p-4 lg:p-8 max-w-7xl mx-auto space-y-6 text-slate-200">
+    <div className="p-3 sm:p-5 lg:p-8 max-w-7xl mx-auto space-y-4 sm:space-y-6 text-slate-200 w-full max-w-full overflow-x-hidden min-w-0">
       {/* Header */}
       <div className="bg-[#10131d] border border-[#2b2416] p-5 rounded-2xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -64,9 +64,9 @@ export const MipModule: React.FC<MipModuleProps> = ({ stations }) => {
       </div>
 
       {/* Main MIP View */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 w-full max-w-full min-w-0 overflow-hidden">
         {/* Left: Croquis / Interactive Blueprint */}
-        <div className="lg:col-span-8 bg-[#0d1017] border border-[#292215] rounded-xl p-4 shadow-xl space-y-3">
+        <div className="lg:col-span-8 bg-[#0d1017] border border-[#292215] rounded-xl p-4 shadow-xl space-y-3 min-w-0 w-full">
           <div className="flex items-center justify-between text-xs border-b border-[#211b11] pb-2">
             <span className="font-bold text-white flex items-center gap-2">
               <Map className="w-4 h-4 text-[#d4a34b]" />
@@ -137,7 +137,7 @@ export const MipModule: React.FC<MipModuleProps> = ({ stations }) => {
         </div>
 
         {/* Right: Station Detailed Card */}
-        <div className="lg:col-span-4 bg-[#10131d] border border-[#292215] rounded-xl p-4 shadow-xl space-y-4">
+        <div className="lg:col-span-4 bg-[#10131d] border border-[#292215] rounded-xl p-4 shadow-xl space-y-4 min-w-0 w-full">
           <div className="border-b border-[#211a11] pb-2 flex items-center justify-between">
             <span className="text-xs font-bold text-[#d4a34b]">Ficha Técnica del Dispositivo</span>
             {selectedStation && (
