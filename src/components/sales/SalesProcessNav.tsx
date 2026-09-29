@@ -36,18 +36,18 @@ export const SalesProcessNav: React.FC<SalesProcessNavProps> = ({
         {/* Step 1 */}
         <button
           onClick={() => onSelectStep('prospecto')}
-          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+          className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 ${
             currentStep === 'prospecto'
               ? 'bg-[#d4a34b] text-black shadow-[0_0_14px_rgba(212,163,75,0.5)]'
               : 'bg-[#12151f] border border-[#2c2314] text-slate-300 hover:border-[#d4a34b]/60'
           }`}
         >
-          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] ${
+          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] shrink-0 ${
             currentStep === 'prospecto' ? 'bg-black text-[#d4a34b]' : 'bg-[#211a10] text-[#d4a34b]'
           }`}>
             1
           </span>
-          <span>Prospecto / Levantamiento</span>
+          <span>Prospecto<span className="hidden sm:inline"> / Levantamiento</span></span>
         </button>
 
         <span className="text-[#3f341d] font-bold">›</span>
@@ -55,18 +55,18 @@ export const SalesProcessNav: React.FC<SalesProcessNavProps> = ({
         {/* Step 2 */}
         <button
           onClick={() => canNavigateToCotizacion && onSelectStep('cotizacion')}
-          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+          className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 ${
             currentStep === 'cotizacion'
               ? 'bg-[#d4a34b] text-black shadow-[0_0_14px_rgba(212,163,75,0.5)]'
               : 'bg-[#12151f] border border-[#2c2314] text-slate-300 hover:border-[#d4a34b]/60'
           }`}
         >
-          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] ${
+          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] shrink-0 ${
             currentStep === 'cotizacion' ? 'bg-black text-[#d4a34b]' : 'bg-[#211a10] text-[#d4a34b]'
           }`}>
             2
           </span>
-          <span>Cotización / Seguimiento</span>
+          <span>Cotización<span className="hidden sm:inline"> / Seguimiento</span></span>
         </button>
 
         <span className="text-[#3f341d] font-bold">›</span>
@@ -74,18 +74,18 @@ export const SalesProcessNav: React.FC<SalesProcessNavProps> = ({
         {/* Step 3 */}
         <button
           onClick={() => canNavigateToCierre && onSelectStep('cierre')}
-          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+          className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 ${
             currentStep === 'cierre'
               ? 'bg-[#d4a34b] text-black shadow-[0_0_14px_rgba(212,163,75,0.5)]'
               : 'bg-[#12151f] border border-[#2c2314] text-slate-300 hover:border-[#d4a34b]/60'
           }`}
         >
-          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] ${
+          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] shrink-0 ${
             currentStep === 'cierre' ? 'bg-black text-[#d4a34b]' : 'bg-[#211a10] text-[#d4a34b]'
           }`}>
             3
           </span>
-          <span>Cierre / Contrato</span>
+          <span>Cierre<span className="hidden sm:inline"> / Contrato</span></span>
         </button>
       </div>
 

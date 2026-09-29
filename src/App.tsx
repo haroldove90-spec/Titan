@@ -15,6 +15,8 @@ import { BiometricsModule } from './components/biometrics/BiometricsModule';
 import { SanitaryModule } from './components/sanitary/SanitaryModule';
 import { GeneralDashboard } from './components/general/GeneralDashboard';
 import { CrmClientPortal } from './components/crm/CrmClientPortal';
+import { MobileBottomNav } from './components/MobileBottomNav';
+import { RoleSwitchModal } from './components/RoleSwitchModal';
 import { 
   INITIAL_PROSPECT, 
   INITIAL_QUOTE, 
@@ -32,6 +34,7 @@ export default function App() {
   const [currentRole, setCurrentRole] = useState<UserRole>('direccion_general');
   const [activeModule, setActiveModule] = useState<string>('hub');
   const [salesStep, setSalesStep] = useState<SalesStep>('dashboard');
+  const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
 
   // Master Shared State (The Single Master Record / Expediente Único)
   const [prospect, setProspect] = useState<Prospect>(INITIAL_PROSPECT);
@@ -197,11 +200,12 @@ export default function App() {
         activeModuleTitle={activeTitle}
         activeModuleSubtitle={activeSubtitle}
         onGoHome={() => setActiveModule('hub')}
+        onOpenRoleModal={() => setIsRoleModalOpen(true)}
       />
 
-      {/* Secondary Subnav for Quick Cross-Module Switching */}
+      {/* Secondary Subnav for Quick Cross-Module Switching: Desktop only (hidden on tablet & mobile) */}
       {activeModule !== 'hub' && (
-        <div className="bg-[#0b0e15] border-b border-[#211a11] px-4 lg:px-8 py-1.5 flex items-center justify-between text-xs text-slate-400 overflow-x-auto whitespace-nowrap gap-2">
+        <div className="hidden lg:flex bg-[#0b0e15] border-b border-[#211a11] px-4 lg:px-8 py-1.5 items-center justify-between text-xs text-slate-400 overflow-x-auto whitespace-nowrap gap-2">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setActiveModule('hub')}
@@ -293,8 +297,8 @@ export default function App() {
         </div>
       )}
 
-      {/* Main View Area */}
-      <main className="flex-1">
+      {/* Main View Area with Bottom Padding on Tablet/Mobile */}
+      <main className="flex-1 pb-24 lg:pb-6">
         {/* Hub / Pantalla Principal */}
         {activeModule === 'hub' && (
           <HubNavigation
@@ -441,8 +445,47 @@ export default function App() {
         )}
       </main>
 
-      {/* Global Footer Note */}
-      <footer className="bg-[#07080b] border-t border-[#1f190e] py-3 px-6 text-center text-[11px] text-slate-500">
+      {/* Mobile and Tablet Bottom Navigation Bar (App-like experience) */}
+      <MobileBottomNav
+        activeModule={activeModule}
+        currentRole={currentRole}
+        onNavigate={(mod) => {
+          if (mod === 'ventas') {
+            setActiveModule('ventas');
+            setSalesStep('dashboard');
+          } else {
+            setActiveModule(mod);
+          }
+        }}
+        onOpenRoleModal={() => setIsRoleModalOpen(true)}
+      />
+
+      {/* Master Role Switcher and Logout Modal */}
+      <RoleSwitchModal
+        isOpen={isRoleModalOpen}
+        onClose={() => setIsRoleModalOpen(false)}
+        currentRole={currentRole}
+        onSelectRole={(role) => {
+          setCurrentRole(role);
+          if (role === 'ventas') {
+            setActiveModule('ventas');
+            setSalesStep('dashboard');
+          } else if (role === 'servicios') {
+            setActiveModule('servicios');
+          } else if (role === 'administracion') {
+            setActiveModule('administracion');
+          } else if (role === 'responsable_sanitario') {
+            setActiveModule('responsable_sanitario');
+          } else if (role === 'crm_clientes') {
+            setActiveModule('crm_clientes');
+          } else {
+            setActiveModule('direccion_general');
+          }
+        }}
+      />
+
+      {/* Global Footer Note (hidden on mobile/tablet to give room to bottom bar) */}
+      <footer className="hidden lg:block bg-[#07080b] border-t border-[#1f190e] py-3 px-6 text-center text-[11px] text-slate-500">
         TITAN PEST CONTROL GROUP · Arquitectura Funcional 1.0 (v9) · Todos los derechos reservados · NOM-256-SSA1-2012 / COFEPRIS
       </footer>
     </div>

@@ -18,6 +18,7 @@ interface HeaderProps {
   activeModuleSubtitle?: string;
   onGoHome: () => void;
   onSearch?: (query: string) => void;
+  onOpenRoleModal?: () => void;
 }
 
 export const ROLE_LABELS: Record<UserRole, { title: string; user: string; badge: string }> = {
@@ -36,6 +37,7 @@ export const Header: React.FC<HeaderProps> = ({
   activeModuleTitle = 'Sistema Integral de Operaciones',
   activeModuleSubtitle,
   onGoHome,
+  onOpenRoleModal,
 }) => {
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [time, setTime] = React.useState('20:45');
@@ -207,6 +209,18 @@ export const Header: React.FC<HeaderProps> = ({
                   </button>
                 );
               })}
+
+              <div className="pt-2 mt-1 border-t border-[#251f14]">
+                <button
+                  onClick={() => {
+                    setDropdownOpen(false);
+                    if (onOpenRoleModal) onOpenRoleModal();
+                  }}
+                  className="w-full text-center py-1.5 text-xs text-[#d4a34b] hover:text-white font-bold bg-[#1e170d] hover:bg-[#2c2211] rounded-lg transition-colors"
+                >
+                  Cerrar sesión / Administrar Roles
+                </button>
+              </div>
             </div>
           )}
         </div>
