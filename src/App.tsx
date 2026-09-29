@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { UserRole } from './types/titan';
 import { Header } from './components/Header';
-import { HubNavigation } from './components/HubNavigation';
+import { Sidebar } from './components/Sidebar';
+import { MobileBottomNav } from './components/MobileBottomNav';
+import { RoleSwitchModal } from './components/RoleSwitchModal';
 import { SalesProcessNav, SalesStep } from './components/sales/SalesProcessNav';
 import { SalesDashboard } from './components/sales/SalesDashboard';
 import { ProspectForm } from './components/sales/ProspectForm';
@@ -15,8 +17,6 @@ import { BiometricsModule } from './components/biometrics/BiometricsModule';
 import { SanitaryModule } from './components/sanitary/SanitaryModule';
 import { GeneralDashboard } from './components/general/GeneralDashboard';
 import { CrmClientPortal } from './components/crm/CrmClientPortal';
-import { MobileBottomNav } from './components/MobileBottomNav';
-import { RoleSwitchModal } from './components/RoleSwitchModal';
 import { 
   INITIAL_PROSPECT, 
   INITIAL_QUOTE, 
@@ -29,11 +29,31 @@ import {
 } from './data/mockData';
 import { Prospect, Quote, ContractData, ServiceExecution } from './types/titan';
 
+const getDefaultModuleForRole = (role: UserRole): string => {
+  switch (role) {
+    case 'direccion_general':
+      return 'general_kpi';
+    case 'direccion_operaciones':
+      return 'op_tablero';
+    case 'ventas':
+      return 'p01';
+    case 'servicios':
+      return 'srv_agenda';
+    case 'administracion':
+      return 'adm_cxc';
+    case 'responsable_sanitario':
+      return 'san_carpetas';
+    case 'crm_clientes':
+      return 'crm_expediente';
+    default:
+      return 'general_kpi';
+  }
+};
+
 export default function App() {
-  // Navigation & Role State
+  // Navigation & Isolated Role State
   const [currentRole, setCurrentRole] = useState<UserRole>('direccion_general');
-  const [activeModule, setActiveModule] = useState<string>('hub');
-  const [salesStep, setSalesStep] = useState<SalesStep>('dashboard');
+  const [activeModuleId, setActiveModuleId] = useState<string>('general_kpi');
   const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
 
   // Master Shared State (The Single Master Record / Expediente Único)
@@ -46,6 +66,12 @@ export default function App() {
   const [accounts, setAccounts] = useState(INITIAL_ACCOUNTS);
   const [attendance, setAttendance] = useState(INITIAL_ATTENDANCE);
 
+  // Role Switch / Authentication Handler
+  const handleRoleChange = (newRole: UserRole) => {
+    setCurrentRole(newRole);
+    setActiveModuleId(getDefaultModuleForRole(newRole));
+  };
+
   // Handlers for Commercial Process
   const handleProceedToQuote = (updatedProspect: Prospect) => {
     setProspect(updatedProspect);
@@ -56,7 +82,7 @@ export default function App() {
       propertySize: updatedProspect.propertySize,
       serviceType: updatedProspect.serviceType,
     }));
-    setSalesStep('cotizacion');
+    setActiveModuleId('p03');
   };
 
   const handleProceedToClose = (updatedQuote: Quote) => {
@@ -66,7 +92,7 @@ export default function App() {
       quoteId: updatedQuote.id,
       contractType: updatedQuote.contractType,
     }));
-    setSalesStep('cierre');
+    setActiveModuleId('p04');
   };
 
   const handleFinalizeContract = (updatedContract: ContractData) => {
@@ -110,7 +136,7 @@ export default function App() {
     setAccounts((prev) => [newAccount, ...prev]);
 
     // Return to Sales Dashboard
-    setSalesStep('dashboard');
+    setActiveModuleId('p01');
   };
 
   const handleCompleteService = (completedOrder: ServiceExecution) => {
@@ -131,210 +157,201 @@ export default function App() {
     }
   };
 
-  // Determine Title and Subtitle based on module & sub-step
+  // Determine Title and Subtitle based on active module & role
   const getContextualHeaders = () => {
-    if (activeModule === 'hub') {
-      return { title: 'Pantalla Principal', subtitle: 'Sistema Integral de Operaciones' };
+    switch (activeModuleId) {
+      case 'general_kpi':
+        return { title: 'Dirección General', subtitle: 'Dashboard Ejecutivo y Conversión' };
+      case 'general_rentabilidad':
+        return { title: 'Dirección General', subtitle: 'Análisis de Rentabilidad Real por Cliente' };
+      case 'general_ventas':
+        return { title: 'Dirección General', subtitle: 'Supervisión de Cartera de Ventas' };
+      case 'general_servicios':
+        return { title: 'Dirección General', subtitle: 'Supervisión de Operaciones en Ruta' };
+      case 'general_finanzas':
+        return { title: 'Dirección General', subtitle: 'Supervisión Financiera y Facturación' };
+
+      case 'op_tablero':
+        return { title: 'Dirección de Operaciones', subtitle: 'Flota Activa y Zonas Operativas' };
+      case 'op_rutas':
+        return { title: 'Dirección de Operaciones', subtitle: 'Agenda y Servicios en Campo' };
+      case 'op_almacen':
+        return { title: 'Dirección de Operaciones', subtitle: 'Control de Almacén Químico' };
+      case 'op_mip':
+        return { title: 'Dirección de Operaciones', subtitle: 'Supervisión de Red MIP en Clientes' };
+      case 'op_asistencia':
+        return { title: 'Dirección de Operaciones', subtitle: 'Control de Asistencia e Incidencias' };
+
+      case 'p01':
+        return { title: 'Ventas Comercial', subtitle: 'P01 · Dashboard de Ventas y Trazabilidad' };
+      case 'p02':
+        return { title: 'Ventas Comercial', subtitle: 'P02 · Prospecto / Levantamiento' };
+      case 'p03':
+        return { title: 'Ventas Comercial', subtitle: 'P03 · Cotización con Motor v9 Protegido' };
+      case 'p04':
+        return { title: 'Ventas Comercial', subtitle: 'P04 · Cierre, Contrato y Firmas Digitales' };
+
+      case 'srv_agenda':
+        return { title: 'Servicios de Zona', subtitle: 'Mi Agenda del Día y Rutas GPS' };
+      case 'srv_ejecucion':
+        return { title: 'Servicios de Zona', subtitle: 'Ejecución y Bitácora Oficial NOM-256' };
+      case 'srv_mip':
+        return { title: 'Servicios de Zona', subtitle: 'Inspección de Estaciones y Croquis MIP' };
+      case 'srv_quimicos':
+        return { title: 'Servicios de Zona', subtitle: 'Plaguicidas y Lotes Asignados' };
+      case 'srv_asistencia':
+        return { title: 'Servicios de Zona', subtitle: 'Registro Biométrico de Asistencia' };
+
+      case 'adm_cxc':
+        return { title: 'Administración y Finanzas', subtitle: '18.1 Cuentas por Cobrar (CxC) de Contratos' };
+      case 'adm_bancos':
+        return { title: 'Administración y Finanzas', subtitle: '18.2 Conciliador Bancario Automatizado' };
+      case 'adm_cfdi':
+        return { title: 'Administración y Finanzas', subtitle: '18.3 Timbrado y Emisión CFDI 4.0' };
+      case 'adm_nomina':
+        return { title: 'Administración y Finanzas', subtitle: 'Prenómina e Incidencias de Técnicos' };
+      case 'adm_contratos':
+        return { title: 'Administración y Finanzas', subtitle: 'Contratos Activos y Expedientes' };
+
+      case 'san_carpetas':
+        return { title: 'Responsable Sanitario', subtitle: 'Carpeta Regulatoria NOM-256-SSA1-2012' };
+      case 'san_constancias':
+        return { title: 'Responsable Sanitario', subtitle: 'Constancias Oficiales de Fumigación' };
+      case 'san_lotes':
+        return { title: 'Responsable Sanitario', subtitle: 'Control de Lotes y Registros COFEPRIS' };
+      case 'san_mip':
+        return { title: 'Responsable Sanitario', subtitle: 'Auditoría de Incidencias Sanitarias MIP' };
+
+      case 'crm_expediente':
+        return { title: 'Portal CRM Clientes', subtitle: 'Expediente Único y Estado del Contrato' };
+      case 'crm_certificados':
+        return { title: 'Portal CRM Clientes', subtitle: 'Certificados Oficiales con Sello NOM-256' };
+      case 'crm_mapa':
+        return { title: 'Portal CRM Clientes', subtitle: 'Plano de Monitoreo de Trampas del Inmueble' };
+
+      default:
+        return { title: 'TITAN Pest Control Group', subtitle: 'Sistema Integral de Operaciones' };
     }
-    if (activeModule === 'ventas') {
-      const stepNames: Record<SalesStep, string> = {
-        dashboard: 'Dashboard de Ventas (P01)',
-        prospecto: 'Prospecto / Levantamiento (P02)',
-        cotizacion: 'Cotización / Seguimiento (P03)',
-        cierre: 'Cierre / Contrato (P04)',
-      };
-      return { title: 'Ventas', subtitle: stepNames[salesStep] };
-    }
-    if (activeModule === 'servicios') {
-      return { title: 'Servicios', subtitle: 'Agenda, Rutas GPS y Ejecución en Campo' };
-    }
-    if (activeModule === 'administracion') {
-      return { title: 'Administración', subtitle: 'CxC, Conciliación Bancaria y Facturación CFDI' };
-    }
-    if (activeModule === 'responsable_sanitario') {
-      return { title: 'Responsable Sanitario', subtitle: 'NOM-256-SSA1-2012 y COFEPRIS' };
-    }
-    if (activeModule === 'crm_clientes') {
-      return { title: 'Portal CRM Clientes', subtitle: 'Expediente y Constancias Digitales' };
-    }
-    if (activeModule === 'direccion_general' || activeModule === 'direccion_operaciones') {
-      return { title: 'Dirección General', subtitle: 'Dashboard Ejecutivo y Rentabilidad Real' };
-    }
-    if (activeModule === 'mip') {
-      return { title: 'MIP', subtitle: 'Mapas, Estaciones y Monitoreo' };
-    }
-    if (activeModule === 'inventario') {
-      return { title: 'Inventario', subtitle: 'Almacén Químico y Trazabilidad de Lotes' };
-    }
-    if (activeModule === 'biometria') {
-      return { title: 'Control de Personal', subtitle: 'Asistencia Biométrica y Prenómina' };
-    }
-    return { title: 'TITAN Pest Control Group', subtitle: '' };
   };
 
   const { title: activeTitle, subtitle: activeSubtitle } = getContextualHeaders();
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#08090d] text-slate-100 flex flex-col selection:bg-[#f59e0b] selection:text-black relative">
-      {/* Institutional Titan Header */}
-      <Header
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#08090d] text-slate-100 flex flex-row selection:bg-[#f59e0b] selection:text-black relative">
+      {/* Desktop Fullscreen Sidebar: exclusive modules per role & prominent logout */}
+      <Sidebar
         currentRole={currentRole}
-        onRoleChange={(role) => {
-          setCurrentRole(role);
-          // Optional sync of module when switching role
-          if (role === 'ventas') {
-            setActiveModule('ventas');
-            setSalesStep('dashboard');
-          } else if (role === 'servicios') {
-            setActiveModule('servicios');
-          } else if (role === 'administracion') {
-            setActiveModule('administracion');
-          } else if (role === 'responsable_sanitario') {
-            setActiveModule('responsable_sanitario');
-          } else if (role === 'crm_clientes') {
-            setActiveModule('crm_clientes');
-          } else if (role === 'direccion_general' || role === 'direccion_operaciones') {
-            setActiveModule('direccion_general');
-          }
-        }}
-        activeModuleTitle={activeTitle}
-        activeModuleSubtitle={activeSubtitle}
-        onGoHome={() => setActiveModule('hub')}
-        onOpenRoleModal={() => setIsRoleModalOpen(true)}
+        activeModuleId={activeModuleId}
+        onSelectModule={(id) => setActiveModuleId(id)}
+        onLogout={() => setIsRoleModalOpen(true)}
       />
 
-      {/* Secondary Subnav for Quick Cross-Module Switching: Desktop only (hidden on tablet & mobile) */}
-      {activeModule !== 'hub' && (
-        <div className="hidden xl:flex bg-[#0b0e15] border-b border-[#211a11] px-4 lg:px-8 py-1.5 items-center justify-between text-xs text-slate-400 overflow-x-hidden whitespace-nowrap gap-2 w-full max-w-full">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setActiveModule('hub')}
-              className="text-[#d4a34b] hover:underline font-bold mr-2"
-            >
-              ‹ Menú Principal
-            </button>
-            <span className="text-slate-600">|</span>
-            <button
-              onClick={() => setActiveModule('direccion_general')}
-              className={`px-2.5 py-1 rounded transition-colors ${
-                activeModule === 'direccion_general' ? 'text-[#f59e0b] font-bold bg-[#1d170d]' : 'hover:text-white'
-              }`}
-            >
-              Dirección
-            </button>
-            <button
-              onClick={() => {
-                setActiveModule('ventas');
-                setSalesStep('dashboard');
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 w-full max-w-full overflow-x-hidden">
+        {/* Top Header */}
+        <Header
+          currentRole={currentRole}
+          onRoleChange={handleRoleChange}
+          activeModuleTitle={activeTitle}
+          activeModuleSubtitle={activeSubtitle}
+          onGoHome={() => setActiveModuleId(getDefaultModuleForRole(currentRole))}
+          onOpenRoleModal={() => setIsRoleModalOpen(true)}
+        />
+
+        {/* View Content (with padding for mobile bottom bar) */}
+        <main className="flex-1 pb-24 lg:pb-8 w-full max-w-full overflow-x-hidden min-w-0">
+          {/* 1. DIRECCIÓN GENERAL */}
+          {(activeModuleId === 'general_kpi' || activeModuleId === 'general_rentabilidad') && (
+            <GeneralDashboard
+              onNavigateToModule={(mod) => {
+                if (mod === 'ventas') setActiveModuleId('general_ventas');
+                else if (mod === 'servicios') setActiveModuleId('general_servicios');
+                else if (mod === 'administracion') setActiveModuleId('general_finanzas');
               }}
-              className={`px-2.5 py-1 rounded transition-colors ${
-                activeModule === 'ventas' ? 'text-[#f59e0b] font-bold bg-[#1d170d]' : 'hover:text-white'
-              }`}
-            >
-              Ventas
-            </button>
-            <button
-              onClick={() => setActiveModule('servicios')}
-              className={`px-2.5 py-1 rounded transition-colors ${
-                activeModule === 'servicios' ? 'text-[#f59e0b] font-bold bg-[#1d170d]' : 'hover:text-white'
-              }`}
-            >
-              Servicios / Rutas
-            </button>
-            <button
-              onClick={() => setActiveModule('mip')}
-              className={`px-2.5 py-1 rounded transition-colors ${
-                activeModule === 'mip' ? 'text-[#f59e0b] font-bold bg-[#1d170d]' : 'hover:text-white'
-              }`}
-            >
-              MIP Estaciones
-            </button>
-            <button
-              onClick={() => setActiveModule('inventario')}
-              className={`px-2.5 py-1 rounded transition-colors ${
-                activeModule === 'inventario' ? 'text-[#f59e0b] font-bold bg-[#1d170d]' : 'hover:text-white'
-              }`}
-            >
-              Inventario Químico
-            </button>
-            <button
-              onClick={() => setActiveModule('administracion')}
-              className={`px-2.5 py-1 rounded transition-colors ${
-                activeModule === 'administracion' ? 'text-[#f59e0b] font-bold bg-[#1d170d]' : 'hover:text-white'
-              }`}
-            >
-              Administración / CxC
-            </button>
-            <button
-              onClick={() => setActiveModule('biometria')}
-              className={`px-2.5 py-1 rounded transition-colors ${
-                activeModule === 'biometria' ? 'text-[#f59e0b] font-bold bg-[#1d170d]' : 'hover:text-white'
-              }`}
-            >
-              Biometría
-            </button>
-            <button
-              onClick={() => setActiveModule('responsable_sanitario')}
-              className={`px-2.5 py-1 rounded transition-colors ${
-                activeModule === 'responsable_sanitario' ? 'text-[#f59e0b] font-bold bg-[#1d170d]' : 'hover:text-white'
-              }`}
-            >
-              Sanitario NOM-256
-            </button>
-            <button
-              onClick={() => setActiveModule('crm_clientes')}
-              className={`px-2.5 py-1 rounded transition-colors ${
-                activeModule === 'crm_clientes' ? 'text-[#f59e0b] font-bold bg-[#1d170d]' : 'hover:text-white'
-              }`}
-            >
-              Portal Cliente
-            </button>
-          </div>
-
-          <div className="text-[11px] text-[#937b46] hidden md:block">
-            Expediente Activo: <strong className="text-white">{prospect.businessName}</strong> ({contract.contractFolio})
-          </div>
-        </div>
-      )}
-
-      {/* Main View Area with Bottom Padding on Tablet/Mobile */}
-      <main className="flex-1 pb-24 xl:pb-6 w-full max-w-full overflow-x-hidden min-w-0">
-        {/* Hub / Pantalla Principal */}
-        {activeModule === 'hub' && (
-          <HubNavigation
-            currentRole={currentRole}
-            onSelectModule={(key) => {
-              if (key === 'ventas') {
-                setActiveModule('ventas');
-                setSalesStep('dashboard');
-              } else {
-                setActiveModule(key);
-              }
-            }}
-          />
-        )}
-
-        {/* Módulo Ventas (Las 4 vistas definitivas) */}
-        {activeModule === 'ventas' && (
-          <div className="flex flex-col min-h-full">
-            {/* Upper Linear Process Stepper */}
-            <SalesProcessNav
-              currentStep={salesStep}
-              onSelectStep={(step) => setSalesStep(step)}
             />
+          )}
 
-            {/* P01: Dashboard de Ventas */}
-            {salesStep === 'dashboard' && (
-              <SalesDashboard
-                onStartNewProspect={() => setSalesStep('prospecto')}
-                onOpenProspect={() => setSalesStep('prospecto')}
-                onOpenQuote={() => setSalesStep('cotizacion')}
-                onOpenContract={() => setSalesStep('cierre')}
+          {activeModuleId === 'general_ventas' && (
+            <SalesDashboard
+              onStartNewProspect={() => setActiveModuleId('p02')}
+              onOpenProspect={() => setActiveModuleId('p02')}
+              onOpenQuote={() => setActiveModuleId('p03')}
+              onOpenContract={() => setActiveModuleId('p04')}
+            />
+          )}
+
+          {activeModuleId === 'general_servicios' && (
+            <ServicesModule
+              orders={services}
+              chemicals={chemicals}
+              onCompleteService={handleCompleteService}
+            />
+          )}
+
+          {activeModuleId === 'general_finanzas' && (
+            <AdminModule accounts={accounts} />
+          )}
+
+          {/* 2. DIRECCIÓN DE OPERACIONES */}
+          {(activeModuleId === 'op_tablero' || activeModuleId === 'op_rutas') && (
+            <ServicesModule
+              orders={services}
+              chemicals={chemicals}
+              onCompleteService={handleCompleteService}
+            />
+          )}
+
+          {activeModuleId === 'op_almacen' && (
+            <InventoryModule chemicals={chemicals} />
+          )}
+
+          {activeModuleId === 'op_mip' && (
+            <MipModule
+              stations={mipStations}
+              onUpdateStation={(updated) => {
+                setMipStations((prev) =>
+                  prev.map((s) => (s.id === updated.id ? updated : s))
+                );
+              }}
+            />
+          )}
+
+          {activeModuleId === 'op_asistencia' && (
+            <BiometricsModule attendanceRecords={attendance} />
+          )}
+
+          {/* 3. VENTAS COMERCIAL (4 Vistas P01-P04) */}
+          {activeModuleId === 'p01' && (
+            <div className="flex flex-col min-h-full">
+              <SalesProcessNav
+                currentStep="dashboard"
+                onSelectStep={(step) => {
+                  if (step === 'dashboard') setActiveModuleId('p01');
+                  else if (step === 'prospecto') setActiveModuleId('p02');
+                  else if (step === 'cotizacion') setActiveModuleId('p03');
+                  else if (step === 'cierre') setActiveModuleId('p04');
+                }}
               />
-            )}
+              <SalesDashboard
+                onStartNewProspect={() => setActiveModuleId('p02')}
+                onOpenProspect={() => setActiveModuleId('p02')}
+                onOpenQuote={() => setActiveModuleId('p03')}
+                onOpenContract={() => setActiveModuleId('p04')}
+              />
+            </div>
+          )}
 
-            {/* P02: Prospecto / Levantamiento */}
-            {salesStep === 'prospecto' && (
+          {activeModuleId === 'p02' && (
+            <div className="flex flex-col min-h-full">
+              <SalesProcessNav
+                currentStep="prospecto"
+                onSelectStep={(step) => {
+                  if (step === 'dashboard') setActiveModuleId('p01');
+                  else if (step === 'prospecto') setActiveModuleId('p02');
+                  else if (step === 'cotizacion') setActiveModuleId('p03');
+                  else if (step === 'cierre') setActiveModuleId('p04');
+                }}
+              />
               <ProspectForm
                 initialData={prospect}
                 onSaveDraft={(saved) => {
@@ -342,12 +359,22 @@ export default function App() {
                   alert('Borrador de Prospecto / Levantamiento guardado con éxito.');
                 }}
                 onProceedToQuote={handleProceedToQuote}
-                onCancel={() => setSalesStep('dashboard')}
+                onCancel={() => setActiveModuleId('p01')}
               />
-            )}
+            </div>
+          )}
 
-            {/* P03: Cotización / Seguimiento */}
-            {salesStep === 'cotizacion' && (
+          {activeModuleId === 'p03' && (
+            <div className="flex flex-col min-h-full">
+              <SalesProcessNav
+                currentStep="cotizacion"
+                onSelectStep={(step) => {
+                  if (step === 'dashboard') setActiveModuleId('p01');
+                  else if (step === 'prospecto') setActiveModuleId('p02');
+                  else if (step === 'cotizacion') setActiveModuleId('p03');
+                  else if (step === 'cierre') setActiveModuleId('p04');
+                }}
+              />
               <QuoteEngine
                 prospect={prospect}
                 initialQuote={quote}
@@ -356,12 +383,22 @@ export default function App() {
                   alert('Borrador de Cotización guardado.');
                 }}
                 onProceedToClose={handleProceedToClose}
-                onBackToProspect={() => setSalesStep('prospecto')}
+                onBackToProspect={() => setActiveModuleId('p02')}
               />
-            )}
+            </div>
+          )}
 
-            {/* P04: Cierre / Contrato */}
-            {salesStep === 'cierre' && (
+          {activeModuleId === 'p04' && (
+            <div className="flex flex-col min-h-full">
+              <SalesProcessNav
+                currentStep="cierre"
+                onSelectStep={(step) => {
+                  if (step === 'dashboard') setActiveModuleId('p01');
+                  else if (step === 'prospecto') setActiveModuleId('p02');
+                  else if (step === 'cotizacion') setActiveModuleId('p03');
+                  else if (step === 'cierre') setActiveModuleId('p04');
+                }}
+              />
               <ContractClose
                 prospect={prospect}
                 quote={quote}
@@ -371,127 +408,116 @@ export default function App() {
                   alert('Borrador de Cierre / Contrato guardado.');
                 }}
                 onFinalizeContract={handleFinalizeContract}
-                onCancel={() => setSalesStep('cotizacion')}
+                onCancel={() => setActiveModuleId('p03')}
               />
-            )}
-          </div>
-        )}
+            </div>
+          )}
 
-        {/* Servicios, Rutas GPS y Técnicos */}
-        {activeModule === 'servicios' && (
-          <ServicesModule
-            orders={services}
-            chemicals={chemicals}
-            onCompleteService={handleCompleteService}
-          />
-        )}
+          {/* 4. SERVICIOS DE ZONA (TÉCNICO) */}
+          {(activeModuleId === 'srv_agenda' || activeModuleId === 'srv_ejecucion') && (
+            <ServicesModule
+              orders={services}
+              chemicals={chemicals}
+              onCompleteService={handleCompleteService}
+            />
+          )}
 
-        {/* Manejo Integral de Plagas (MIP) */}
-        {activeModule === 'mip' && (
-          <MipModule
-            stations={mipStations}
-            onUpdateStation={(updated) => {
-              setMipStations((prev) =>
-                prev.map((s) => (s.id === updated.id ? updated : s))
-              );
-            }}
-          />
-        )}
+          {activeModuleId === 'srv_mip' && (
+            <MipModule
+              stations={mipStations}
+              onUpdateStation={(updated) => {
+                setMipStations((prev) =>
+                  prev.map((s) => (s.id === updated.id ? updated : s))
+                );
+              }}
+            />
+          )}
 
-        {/* Inventario Químico */}
-        {activeModule === 'inventario' && (
-          <InventoryModule chemicals={chemicals} />
-        )}
+          {activeModuleId === 'srv_quimicos' && (
+            <InventoryModule chemicals={chemicals} />
+          )}
 
-        {/* Administración, CxC y Bancos */}
-        {activeModule === 'administracion' && (
-          <AdminModule accounts={accounts} />
-        )}
+          {activeModuleId === 'srv_asistencia' && (
+            <BiometricsModule attendanceRecords={attendance} />
+          )}
 
-        {/* Asistencia Biométrica y Nómina */}
-        {activeModule === 'biometria' && (
-          <BiometricsModule attendanceRecords={attendance} />
-        )}
+          {/* 5. ADMINISTRACIÓN Y FINANZAS */}
+          {(activeModuleId === 'adm_cxc' || activeModuleId === 'adm_bancos' || activeModuleId === 'adm_cfdi') && (
+            <AdminModule accounts={accounts} />
+          )}
 
-        {/* Responsable Sanitario NOM-256 */}
-        {activeModule === 'responsable_sanitario' && (
-          <SanitaryModule
-            completedOrders={services.filter((s) => s.status === 'completado')}
-            chemicals={chemicals}
-          />
-        )}
+          {activeModuleId === 'adm_nomina' && (
+            <BiometricsModule attendanceRecords={attendance} />
+          )}
 
-        {/* Dirección General & Rentabilidad */}
-        {(activeModule === 'direccion_general' || activeModule === 'direccion_operaciones') && (
-          <GeneralDashboard
-            onNavigateToModule={(mod) => {
-              if (mod === 'ventas') {
-                setActiveModule('ventas');
-                setSalesStep('dashboard');
-              } else {
-                setActiveModule(mod);
-              }
-            }}
-          />
-        )}
+          {activeModuleId === 'adm_contratos' && (
+            <SalesDashboard
+              onStartNewProspect={() => setActiveModuleId('p02')}
+              onOpenProspect={() => setActiveModuleId('p02')}
+              onOpenQuote={() => setActiveModuleId('p03')}
+              onOpenContract={() => setActiveModuleId('p04')}
+            />
+          )}
 
-        {/* Portal Cliente CRM */}
-        {activeModule === 'crm_clientes' && (
-          <CrmClientPortal
-            contract={contract}
-            services={services}
-            mipStations={mipStations}
-          />
-        )}
-      </main>
+          {/* 6. RESPONSABLE SANITARIO */}
+          {(activeModuleId === 'san_carpetas' || activeModuleId === 'san_constancias') && (
+            <SanitaryModule
+              completedOrders={services.filter((s) => s.status === 'completado')}
+              chemicals={chemicals}
+            />
+          )}
 
-      {/* Mobile and Tablet Bottom Navigation Bar (Role specific modules, zero overflow) */}
-      <MobileBottomNav
-        activeModule={activeModule}
-        currentRole={currentRole}
-        salesStep={salesStep}
-        onNavigateModule={(mod) => {
-          if (mod === 'ventas') {
-            setActiveModule('ventas');
-            setSalesStep('dashboard');
-          } else {
-            setActiveModule(mod);
-          }
-        }}
-        onSelectSalesStep={(step) => {
-          setActiveModule('ventas');
-          setSalesStep(step);
-        }}
-      />
+          {activeModuleId === 'san_lotes' && (
+            <InventoryModule chemicals={chemicals} />
+          )}
 
-      {/* Master Role Switcher and Logout Modal */}
+          {activeModuleId === 'san_mip' && (
+            <MipModule
+              stations={mipStations}
+              onUpdateStation={(updated) => {
+                setMipStations((prev) =>
+                  prev.map((s) => (s.id === updated.id ? updated : s))
+                );
+              }}
+            />
+          )}
+
+          {/* 7. PORTAL CRM CLIENTES */}
+          {(activeModuleId === 'crm_expediente' || activeModuleId === 'crm_certificados') && (
+            <CrmClientPortal
+              contract={contract}
+              services={services}
+              mipStations={mipStations}
+            />
+          )}
+
+          {activeModuleId === 'crm_mapa' && (
+            <MipModule
+              stations={mipStations}
+              onUpdateStation={(updated) => {
+                setMipStations((prev) =>
+                  prev.map((s) => (s.id === updated.id ? updated : s))
+                );
+              }}
+            />
+          )}
+        </main>
+
+        {/* Tablet and Mobile Bottom Navigation Bar */}
+        <MobileBottomNav
+          currentRole={currentRole}
+          activeModuleId={activeModuleId}
+          onSelectModule={(id) => setActiveModuleId(id)}
+        />
+      </div>
+
+      {/* Role Switcher and Login Modal (Appears upon "Cerrar sesión") */}
       <RoleSwitchModal
         isOpen={isRoleModalOpen}
         onClose={() => setIsRoleModalOpen(false)}
         currentRole={currentRole}
-        onSelectRole={(role) => {
-          setCurrentRole(role);
-          if (role === 'ventas') {
-            setActiveModule('ventas');
-            setSalesStep('dashboard');
-          } else if (role === 'servicios') {
-            setActiveModule('servicios');
-          } else if (role === 'administracion') {
-            setActiveModule('administracion');
-          } else if (role === 'responsable_sanitario') {
-            setActiveModule('responsable_sanitario');
-          } else if (role === 'crm_clientes') {
-            setActiveModule('crm_clientes');
-          } else {
-            setActiveModule('direccion_general');
-          }
-        }}
+        onSelectRole={handleRoleChange}
       />
-
-      {/* Global Footer Note (hidden on mobile/tablet to give room to bottom bar) */}
-      <footer className="hidden xl:block bg-[#07080b] border-t border-[#1f190e] py-3 px-6 text-center text-[11px] text-slate-500">
-        TITAN PEST CONTROL GROUP · Arquitectura Funcional 1.0 (v9) · Todos los derechos reservados · NOM-256-SSA1-2012 / COFEPRIS
-      </footer>
     </div>
   );
 }
